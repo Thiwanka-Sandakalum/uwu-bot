@@ -14,7 +14,7 @@ datasource db {
 
 // schema.prisma
 
-// Table for Courses
+// Table for Courses 
 model Courses {
   CourseCode   String    @id 
   CourseName   String    
