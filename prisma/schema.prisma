@@ -27,17 +27,17 @@ model Courses {
 model TimetableSlots {
   SlotID     Int      @id @default(autoincrement())
   Day        String   
-  TimeStart  DateTime
-  TimeEnd    DateTime
-  CourseCode String   
-  Courses    Courses  @relation(fields: [CourseCode], references: [CourseCode])
+  TimeStart  String
+  TimeEnd    String
+  CourseCode String
+  Courses    Courses @relation(fields: [CourseCode], references: [CourseCode])
   @@index([CourseCode], name: "TimetableSlots_CourseCode_Index")
 }
 
 
 // Table for Students
 model Students {
-  StudentID   Int      @id @default(autoincrement())
+  StudentID   String      @id
   Name        String   
   Email       String   
   Hostel      String   
@@ -49,7 +49,7 @@ model Students {
 // Table for Enrollments
 model Enrollments {
   EnrollmentID Int       @id @default(autoincrement())
-  StudentID    Int
+  StudentID    String
   CourseCode   String    
   Students     Students  @relation(fields: [StudentID], references: [StudentID])
   Courses      Courses   @relation(fields: [CourseCode], references: [CourseCode])
