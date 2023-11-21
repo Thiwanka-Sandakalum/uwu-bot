@@ -1,3 +1,6 @@
+// timetable_controler.js
+const { getLecture } = require('../services/timetable.services.js');
+
 const now = new Date();
 const options = { hour: '2-digit', minute: '2-digit', hour12: true };
 
@@ -16,15 +19,17 @@ const startTimes = [
     '03:00 PM',
 ];
 
-function upcoming_lecture() {
+async function upcoming_lecture() {
     const upcomingSlot = startTimes.find((slot) => slot > currentTime);
 
     if (upcomingSlot) {
-        console.log('Upcoming Lecture:', upcomingSlot);
+        const lecture = await getLecture(upcomingSlot);
+        console.log('Upcoming Lecture:', upcomingSlot, lecture);
     } else {
         console.log('No upcoming lectures for today.');
     }
 }
+
 
 function ongoing_lecture() {
     const currentHour = now.getHours();
@@ -42,7 +47,4 @@ function ongoing_lecture() {
 upcoming_lecture();
 ongoing_lecture();
 
-module.exports = {
-    upcoming_lecture,
-    ongoing_lecture
-};
+module.exports = { upcoming_lecture, ongoing_lecture };
