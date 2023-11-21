@@ -34,6 +34,7 @@ model TimetableSlots {
   @@index([CourseCode], name: "TimetableSlots_CourseCode_Index")
 }
 
+
 // Table for Students
 model Students {
   StudentID   Int      @id @default(autoincrement())
