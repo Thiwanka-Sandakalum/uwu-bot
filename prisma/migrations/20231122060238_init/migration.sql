@@ -9,9 +9,10 @@ CREATE TABLE "Courses" (
 CREATE TABLE "TimetableSlots" (
     "SlotID" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "Day" TEXT NOT NULL,
-    "TimeStart" DATETIME NOT NULL,
-    "TimeEnd" DATETIME NOT NULL,
+    "TimeStart" TEXT NOT NULL,
+    "TimeEnd" TEXT NOT NULL,
     "CourseCode" TEXT NOT NULL,
+    "Location" TEXT NOT NULL,
     CONSTRAINT "TimetableSlots_CourseCode_fkey" FOREIGN KEY ("CourseCode") REFERENCES "Courses" ("CourseCode") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -44,6 +45,9 @@ CREATE INDEX "Enrollments_StudentID_Index" ON "Enrollments"("StudentID");
 CREATE INDEX "Enrollments_CourseCode_Index" ON "Enrollments"("CourseCode");
 
 
+
+
+
 INSERT INTO Courses VALUES
 ('ICT 101-2', 'Mathematics for ICT', 'Dr. G.G.N.T. Sandakelum (SL)'),
 ('ESD 121-1', 'English Language', 'Ms. H.H.S.U. Samarakoon (PL)'),
@@ -60,47 +64,28 @@ INSERT INTO Courses VALUES
 
 INSERT INTO TimetableSlots VALUES
 -- Monday
-(1, 'Monday', '08:00:00', '09:00:00', 'ESD 161-1'),
-(2, 'Monday', '09:00:00', '10:00:00', 'ESD 151-1'),
-(3, 'Monday', '10:00:00', '11:00:00', 'ESD 121-1'),
-(6, 'Monday', '13:00:00', '14:00:00', 'ICT 132-2'),
-(7, 'Monday', '14:00:00', '15:00:00', 'ICT 133-3'),
-(8, 'Monday', '15:00:00', '16:00:00', 'ICT 131-3'),
+(1,'Monday', '10:00:00', '12:00:00', 'ICT 141-3' , "TLH1 - Technology Lecture Hall 1"),
+(2,'Monday', '09:00:00', '10:00:00', 'ICT 132-2' , "TLH1 - Technology Lecture Hall 1"),
 
--- Tuesday
-(9, 'Tuesday', '08:00:00', '09:00:00', 'ICT 141-3'),
-(10, 'Tuesday', '09:00:00', '10:00:00', 'ICT 132-2'),
--- -- Tuesday
-(11, 'Tuesday', '10:00:00', '11:00:00', 'ICT 133-3'),
-(12, 'Tuesday', '11:00:00', '12:00:00', 'LIBRARY HOURS'),
-(13, 'Tuesday', '12:00:00', '13:00:00', 'LUNCH BREAK'),
-(14, 'Tuesday', '13:00:00', '14:00:00', 'ICT 132-2'),
-(15, 'Tuesday', '14:00:00', '15:00:00', 'ICT 133-3'),
-(16, 'Tuesday', '15:00:00', '16:00:00', 'ICT 131-3'),
 
--- Wednesday
-(17, 'Wednesday', '08:00:00', '09:00:00', 'ESD 121-1'),
-(18, 'Wednesday', '09:00:00', '10:00:00', 'ICT 101-2'),
-(19, 'Wednesday', '10:00:00', '11:00:00', 'LIBRARY HOURS'),
-(20, 'Wednesday', '11:00:00', '12:00:00', 'LUNCH BREAK'),
-(21, 'Wednesday', '13:00:00', '14:00:00', 'ICT 133-3'),
-(22, 'Wednesday', '14:00:00', '15:00:00', 'ICT 131-3'),
-(23, 'Wednesday', '15:00:00', '16:00:00', 'ICT 131-3'),
+-- Tuesday 
 
--- Thursday
-(24, 'Thursday', '08:00:00', '09:00:00', 'ESD 161-1'),
-(25, 'Thursday', '09:00:00', '10:00:00', 'ICT 132-2'),
-(26, 'Thursday', '10:00:00', '11:00:00', 'ICT 101-2'),
-(27, 'Thursday', '11:00:00', '12:00:00', 'LIBRARY HOURS'),
-(28, 'Thursday', '12:00:00', '13:00:00', 'LUNCH BREAK'),
-(29, 'Thursday', '13:00:00', '14:00:00', 'ICT 132-2'),
-(30, 'Thursday', '14:00:00', '15:00:00', 'ICT 133-3'),
-(31, 'Thursday', '15:00:00', '16:00:00', 'ICT 131-3'),
+(3,'Tuesday', '08:00:00', '09:00:00', 'ESD 161-1' , "MLT - Main Lecture Hall"),
+(4,'Tuesday', '10:00:00', '12:00:00', 'ICT 132-2' , "CAD/CAM - CAD/CAM Laboratory"),
+(5,'Tuesday', '13:00:00', '16:00:00', 'ICT 133-3' , "TLH1 - technology Lecture Hall 1"),
+
+-- Wednesday 
+
+(6,'Wednesday', '10:00:00', '12:00:00', 'ICT 101-2' , "TLH1 - technology Lecture Hall 1"),
+(7,'Wednesday', '13:00:00', '15:00:00', 'ICT 131-3' , "TLH1 - technology Lecture Hall 1"),
+
+-- Thursday 
+
+(8,'Thursday', '08:00:00', '10:00:00', 'ESD 151-1' , "MLT - Main Lecture Hall"),
+(9,'Thursday', '10:00:00', '12:00:00', 'LIBRARY HOURS' , "Library"),
+(10,'Thursday', '13:00:00', '15:00:00', 'ICT 131-3' , "CAD/CAM - CAD/CAM Laboratory"),
 
 -- Friday
-(32, 'Friday', '08:00:00', '09:00:00', 'ICT 101-2'),
-(33, 'Friday', '09:00:00', '10:00:00', 'ESD 151-1'),
-(34, 'Friday', '10:00:00', '11:00:00', 'ESD 121-1'),
-(37, 'Friday', '13:00:00', '14:00:00', 'ICT 132-2'),
-(38, 'Friday', '14:00:00', '15:00:00', 'ICT 133-3'),
-(39, 'Friday', '14:00:00', '15:00:00', 'ICT 141-3');
+
+(11,'Friday', '08:00:00', '09:00:00', 'ESD 121-1' , "MLT - Main Lecture Hall"),
+(12,'Friday', '13:00:00', '16:00:00', 'ICT 141-3' , "PHY LAB - Physics Laboratory");
