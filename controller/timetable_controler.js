@@ -2,28 +2,42 @@
 const { getLecture } = require('../services/timetable.services.js');
 
 const now = new Date();
-const options = { hour: '2-digit', minute: '2-digit', hour12: true };
 
-const currentTime = now.toLocaleTimeString('en-US', options);
+const currentHour = now.getHours()
+// console.log(currentHour)
 
-console.log('Current Time:', currentTime);
 
-const startTimes = [
-    '08:00 AM',
-    '09:00 AM',
-    '10:00 AM',
-    '11:00 AM',
-    '12:00 PM',
-    '01:00 PM',
-    '02:00 PM',
-    '03:00 PM',
-];
+const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const today = daysOfWeek[now.getDay()];
+
+const startTimes = {
+    8: '08:00:00',
+    9: '09:00:00',
+    10: '10:00:00',
+    11: '11:00:00',
+    12: '12:00:00',
+    13: '13:00:00',
+    14: '14:00:00',
+    15: '15:00:00',
+    16: '16:00:00',
+};
+
+const timeSlots = [8, 9, 10, 11, 12, 13, 14, 15,16]
 
 async function upcoming_lecture() {
-    const upcomingSlot = startTimes.find((slot) => slot > currentTime);
+    let upcomingSlot = null;
 
-    if (upcomingSlot) {
-        const lecture = await getLecture(upcomingSlot);
+    timeSlots.forEach((slot) => {
+        console.log(slot);
+        if (slot > currentHour && upcomingSlot === null) {
+            upcomingSlot = slot;
+        }
+    });
+
+    console.log('Upcoming Slot:', upcomingSlot);
+
+    if (upcomingSlot !== null) {
+        const lecture = await getLecture(upcomingSlot, today);
         console.log('Upcoming Lecture:', upcomingSlot, lecture);
     } else {
         console.log('No upcoming lectures for today.');
@@ -44,7 +58,15 @@ function ongoing_lecture() {
     }));
 }
 
-upcoming_lecture();
-ongoing_lecture();
+function today_timetable() {
+    console.log("today time table");
+}
 
-module.exports = { upcoming_lecture, ongoing_lecture };
+function time_table() {
+    console.log("return time table");
+}
+
+upcoming_lecture();
+// ongoing_lecture();
+
+// module.exports = { upcoming_lecture, ongoing_lecture, today_timetable, time_table };
