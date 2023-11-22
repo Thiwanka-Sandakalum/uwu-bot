@@ -27,8 +27,8 @@ model Courses {
 model TimetableSlots {
   SlotID     Int      @id @default(autoincrement())
   Day        String   
-  TimeStart  DateTime
-  TimeEnd    DateTime
+  TimeStart  String
+  TimeEnd    String
   CourseCode String
   Courses    Courses @relation(fields: [CourseCode], references: [CourseCode])
   @@index([CourseCode], name: "TimetableSlots_CourseCode_Index")

@@ -1,6 +1,6 @@
 // timetable.services.js
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const Client = require('@prisma/client');
+const prisma = new Client.PrismaClient();
 
 async function getLecture(time) {
     return new Promise(async (resolve, reject) => {
@@ -15,5 +15,10 @@ async function getLecture(time) {
         }
     });
 }
+
+
+getLecture("09:00:00").then((res) => {
+    console.log(res);
+})
 
 module.exports = { getLecture };
