@@ -30,6 +30,7 @@ model TimetableSlots {
   TimeStart  String
   TimeEnd    String
   CourseCode String
+  Location String
   Courses    Courses @relation(fields: [CourseCode], references: [CourseCode])
   @@index([CourseCode], name: "TimetableSlots_CourseCode_Index")
 }
