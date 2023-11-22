@@ -1,49 +1,55 @@
 // timetable_controler.js
-const { getLecture,getSlots } = require('../services/timetable.services.js');
-
+const { getLecture, GetTodayLectures, GetAllLectures, getSlots } = require('../services/timetable.services.js');
 const now = new Date();
 
 const currentHour = now.getHours()
-
+let upcoming_lec;
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const today = daysOfWeek[now.getDay()];
 
-const startTimes = {
-    8: '08:00:00',
-    9: '09:00:00',
-    10: '10:00:00',
-    11: '11:00:00',
-    12: '12:00:00',
-    13: '13:00:00',
-    14: '14:00:00',
-    15: '15:00:00',
-    16: '16:00:00',
-};
-
-const timeSlots = [8, 9, 10, 11, 12, 13, 14, 15, 16]
-
 async function upcoming_lecture() {
-    let upcomingSlot = null;
-    timeSlots = await getSlots(today)
+    try {
+        const timeSlots = await getSlots(today);
+        const upcomingSlots = {};
 
-    timeSlots.forEach(async (slot) => {
-        if (slot > currentHour && upcomingSlot === null) {
-            upcomingSlot = startTimes[slot];
-            if (upcomingSlot !== null) {
-                const lecture = await getLecture(upcomingSlot, today);
-                console.log(lecture)
-                // if (lecture) {
-                //     console.log('Upcoming Lecture:', upcomingSlot, lecture);
-                // }
-            } else {
-                console.log('No upcoming lectures for today.');
+        timeSlots.forEach((slot) => {
+            const upcomingSlot_hour = parseInt(slot.TimeStart.split(":")[0], 10);
+            upcomingSlots[upcomingSlot_hour] = slot.TimeStart;
+        });
+
+        let lectureFound = false;
+
+        for (let key in upcomingSlots) {
+            key = parseInt(key);
+
+            if (key > currentHour) {
+                console.log(upcomingSlots[key]);
+
+                try {
+                    upcoming_lec = await getLecture(upcomingSlots[key], today);
+                    console.log(upcoming_lec);
+
+                    if (upcoming_lec == null) {
+                        console.log('No upcoming lectures for this hour.');
+                    } else {
+                        lectureFound = true;
+                        break;
+                    }
+                } catch (error) {
+                    console.log(error.message);
+                }
             }
         }
-    });
 
+        if (!lectureFound) {
+            console.log('No upcoming lectures for today.');
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
 }
-
+// upcoming_lecture();
 
 function ongoing_lecture() {
     const currentHour = now.getHours();
@@ -66,7 +72,5 @@ function time_table() {
     console.log("return time table");
 }
 
-upcoming_lecture();
-// ongoing_lecture();
 
-// module.exports = { upcoming_lecture, ongoing_lecture, today_timetable, time_table };
+module.exports = { upcoming_lecture, ongoing_lecture, today_timetable, time_table };
