@@ -19,6 +19,21 @@ async function getLecture(time, day) {
     });
 }
 
+
+async function getSlots(day) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await prisma.$connect();
+            const period = await prisma.timetableSlots.findMany({ where: {Day:day }});
+            await prisma.$disconnect();
+            resolve(period);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+
 async function GetTodayLectures(today) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -46,9 +61,5 @@ async function GetAllLectures() {
 }
 
 
-// GetTodayLectures("Monday").then((res) => {
-//     console.log(res)
-// })
 
-
-module.exports = { getLecture , GetTodayLectures , GetAllLectures};
+module.exports = { getLecture , GetTodayLectures , GetAllLectures , getSlots};
