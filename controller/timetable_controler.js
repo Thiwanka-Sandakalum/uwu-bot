@@ -1,10 +1,9 @@
 // timetable_controler.js
-const { getLecture } = require('../services/timetable.services.js');
+const { getLecture,getSlots } = require('../services/timetable.services.js');
 
 const now = new Date();
 
 const currentHour = now.getHours()
-// console.log(currentHour)
 
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -22,26 +21,27 @@ const startTimes = {
     16: '16:00:00',
 };
 
-const timeSlots = [8, 9, 10, 11, 12, 13, 14, 15,16]
+const timeSlots = [8, 9, 10, 11, 12, 13, 14, 15, 16]
 
 async function upcoming_lecture() {
     let upcomingSlot = null;
+    timeSlots = await getSlots(today)
 
-    timeSlots.forEach((slot) => {
-        console.log(slot);
+    timeSlots.forEach(async (slot) => {
         if (slot > currentHour && upcomingSlot === null) {
-            upcomingSlot = slot;
+            upcomingSlot = startTimes[slot];
+            if (upcomingSlot !== null) {
+                const lecture = await getLecture(upcomingSlot, today);
+                console.log(lecture)
+                // if (lecture) {
+                //     console.log('Upcoming Lecture:', upcomingSlot, lecture);
+                // }
+            } else {
+                console.log('No upcoming lectures for today.');
+            }
         }
     });
 
-    console.log('Upcoming Slot:', upcomingSlot);
-
-    if (upcomingSlot !== null) {
-        const lecture = await getLecture(upcomingSlot, today);
-        console.log('Upcoming Lecture:', upcomingSlot, lecture);
-    } else {
-        console.log('No upcoming lectures for today.');
-    }
 }
 
 

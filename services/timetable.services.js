@@ -3,12 +3,15 @@ const Client = require('@prisma/client');
 const prisma = new Client.PrismaClient();
 
 async function getLecture(time, day) {
-    console.log("find : ", time, day);
+    // console.log("find : ", time, day);
     return new Promise(async (resolve, reject) => {
         try {
             await prisma.$connect();
-            const period = await prisma.timetableSlots.findFirst({ where: { TimeStart: time, Day: day }, include: { Courses: true } });
+            // console.log("this is get lec func ",time,day)
+            const period = await prisma.timetableSlots.findFirst({ where: { TimeStart: "11:00:00", Day: "Wednesday" }, include: { Courses: true } });
+            // const period = await prisma.timetableSlots.findFirst({ where: { TimeStart: time, Day:day }, include: { Courses: true } });
             await prisma.$disconnect();
+            // console.log(period)
             resolve(period);
         } catch (error) {
             reject(error);
@@ -43,9 +46,9 @@ async function GetAllLectures() {
 }
 
 
-GetTodayLectures("Monday").then((res) => {
-    console.log(res)
-})
+// GetTodayLectures("Monday").then((res) => {
+//     console.log(res)
+// })
 
 
 module.exports = { getLecture , GetTodayLectures , GetAllLectures};
