@@ -20,7 +20,7 @@ model Courses {
   CourseName   String    
   LecturerName String    
   TimetableSlots TimetableSlots[]
-  Enrollments Enrollments[]
+  // Enrollments Enrollments[]
 }
 
 // Table for Timetable Slots
@@ -40,20 +40,20 @@ model TimetableSlots {
 model Students {
   StudentID   String      @id
   Name        String   
-  Email       String   
-  Hostel      String   
-  PhoneNumber String 
-  TelegramID  String   
-  Enrollments Enrollments[]
+  Email       String?   
+  Hostel      String?  
+  PhoneNumber String?
+  TelegramID  String?  
+  // Enrollments Enrollments[]
 }
 
 // Table for Enrollments
-model Enrollments {
-  EnrollmentID Int       @id @default(autoincrement())
-  StudentID    String
-  CourseCode   String    
-  Students     Students  @relation(fields: [StudentID], references: [StudentID])
-  Courses      Courses   @relation(fields: [CourseCode], references: [CourseCode])
-  @@index([StudentID], name: "Enrollments_StudentID_Index")
-  @@index([CourseCode], name: "Enrollments_CourseCode_Index")
-}
+// model Enrollments {
+//   EnrollmentID Int       @id @default(autoincrement())
+//   StudentID    String
+//   CourseCode   String    
+//   Students     Students  @relation(fields: [StudentID], references: [StudentID])
+//   Courses      Courses   @relation(fields: [CourseCode], references: [CourseCode])
+//   @@index([StudentID], name: "Enrollments_StudentID_Index")
+//   @@index([CourseCode], name: "Enrollments_CourseCode_Index")
+// }
