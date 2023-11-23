@@ -7,9 +7,16 @@ const bot = new TelegramBot(token, { polling: true });
 
 bot.on('message', async (msg) => {
     console.log(msg);
+    const chatId = msg.chat.id;
+    const username = msg.chat.first_name;
+    console.log(username);
 
     if (msg.entities && msg.entities[0].type) {
         switch (msg.text) {
+            case '/start':
+                const wellcome_msg = `Hello ${username} Wellcome to UWU ICT Bot`
+                bot.sendMessage(chatId, wellcome_msg);
+                break;
             case '/today_schedule':
                 try {
                     timetableData = await today_timetable();
@@ -31,19 +38,20 @@ bot.on('message', async (msg) => {
                         `).join('')}
                             `;
 
-                            bot.sendMessage(msg.chat.id, responseMessage, { parse_mode: 'Markdown' });
+                            bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
                         } else {
-                            bot.sendMessage(msg.chat.id, "No timetable data available for today.");
+                            bot.sendMessage(chatId, "No timetable data available for today.");
                         }
                     } else {
                         console.error('Invalid timetable data format:', timetableData);
-                        bot.sendMessage(msg.chat.id, "Error: Invalid timetable data format.");
+                        bot.sendMessage(chatId, "Error: Invalid timetable data format.");
                     }
+
+                    break;
                 } catch (error) {
                     console.log(error);
-                    bot.sendMessage(msg.chat.id, "Error fetching timetable data.");
+                    bot.sendMessage(chatId, "Error fetching timetable data.");
                 }
-
                 break;
 
             case '/next_lecture':
@@ -51,23 +59,23 @@ bot.on('message', async (msg) => {
                     const timetableData = await upcoming_lecture();
 
                     let responseMessage = `
-                    **Today's Timetable**
+                    **Next Lecture**
 
                         - *${timetableData.TimeStart} - ${timetableData.TimeEnd}*
                         - **Location:** ${timetableData.Location}
                         - **Course:** ${timetableData.Courses.CourseName}
                         - **Lecturer:** ${timetableData.Courses.LecturerName}
                                 `
-                    bot.sendMessage(msg.chat.id, responseMessage, { parse_mode: 'Markdown' });
+                    bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
                 }
                 catch (error) {
                     console.error(error);
-                    bot.sendMessage(msg.chat.id, "Error fetching timetable data.");
+                    bot.sendMessage(chatId, "Error fetching timetable data.");
                 }
-            // Add more cases for other commands if needed
+                break
 
             default:
-                // Handle unknown commands or provide a default response
+                bot.sendMessage(chatId, "this is wrong command")
                 break;
         }
     }

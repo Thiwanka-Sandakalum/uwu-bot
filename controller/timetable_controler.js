@@ -7,8 +7,8 @@ async function upcoming_lecture() {
     console.log("upcoming_lecture");
     try {
         const timeSlots = await getSlots(today);
-        // const currentHour = now.getHours();
-        const currentHour = 9;
+        const currentHour = now.getHours();
+        // const currentHour = 9;
 
         console.log(currentHour);
         const nwest_ones = timeSlots.filter((lecture) => {
