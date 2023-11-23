@@ -1,6 +1,6 @@
 const express = require("express");
 const { sendTodaySchedule, sendOngoingLecture, sendNextLecture, sendTimeTable } = require("./bot/bot.api");
-const { logger } = require('./logger/index');
+const logger = require('./logger/index');
 
 const app = express();
 const PORT = process.env.PORT | 3000
