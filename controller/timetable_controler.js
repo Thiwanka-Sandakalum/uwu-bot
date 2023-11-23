@@ -70,5 +70,5 @@ async function today_timetable() {
     }
 }
 
-// upcoming_lecture()
+
 module.exports = { upcoming_lecture, ongoing_lecture, today_timetable , timetable};

@@ -7,11 +7,8 @@ async function getLecture(time, day) {
     return new Promise(async (resolve, reject) => {
         try {
             await prisma.$connect();
-            // logger.log("this is get lec func ",time,day)
-            // const period = await prisma.timetableSlots.findFirst({ where: { TimeStart: "11:00:00", Day: "Wednesday" }, include: { Courses: true } });
             const period = await prisma.timetableSlots.findFirst({ where: { TimeStart: time, Day: day }, include: { Courses: true } });
             await prisma.$disconnect();
-            // logger.log(period)
             resolve(period);
         } catch (error) {
             reject(error);
