@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "uwubot",
+			"path": "."
+		},
+		{
+			"name": "logger",
+			"path": "../restursnt application/backend/logger"
+		}
+	],
+	"settings": {}
+}
