@@ -55,8 +55,5 @@ async function GetAllLectures() {
     });
 }
 
-getSlots("Monday").then((res) => {
-    console.log(res)
-})
 
-module.exports = { getLecture , GetTodayLectures , GetAllLectures};
+module.exports = { getLecture , GetTodayLectures , GetAllLectures , getSlots};
