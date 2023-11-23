@@ -4,25 +4,25 @@ const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Fri
 
 
 async function upcoming_lecture() {
-    console.log("upcoming_lecture")
+    console.log("upcoming_lecture");
     try {
         const today = daysOfWeek[now.getDay()];
         const timeSlots = await getSlots(today);
         // const currentHour = now.getHours();
         const currentHour = 9;
 
-        console.log(currentHour)
+        console.log(currentHour);
         const nwest_ones = timeSlots.filter((lecture) => {
-            console.log(parseInt(lecture.TimeStart.split(":")[0])> currentHour)
-            parseInt(lecture.TimeStart.split(":")[0]) > currentHour});
+            return parseInt(lecture.TimeStart.split(":")[0]) > currentHour;
+        });
+        console.log(nwest_ones)
 
-
-        const upcomming_lecture_data = nwest_ones.reduce((minObj, currentObj) => {
+        const upcoming_lecture_data = nwest_ones.reduce((minObj, currentObj) => {
             return parseInt(currentObj.TimeStart.split(":")[0]) < parseInt(minObj.TimeStart.split(":")[0]) ? currentObj : minObj;
         }, nwest_ones[0]);
 
-        if (upcomming_lecture_data && upcomming_lecture_data.length !== 0) {
-            return upcomming_lecture_data;
+        if (upcoming_lecture_data && upcoming_lecture_data.length !== 0) {
+            return upcoming_lecture_data;
         } else {
             return null;
         }
@@ -30,7 +30,6 @@ async function upcoming_lecture() {
         console.log(error.message);
     }
 }
-
 
 async function ongoing_lecture() {
     const today = daysOfWeek[now.getDay()];
