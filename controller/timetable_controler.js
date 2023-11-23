@@ -57,12 +57,28 @@ ongoing_lecture().then((res) => {
     console.log(res)
 })
 
-function today_timetable() {
-    console.log("today time table");
+async function today_timetable() {
+    
+    try {
+
+        //wtf? is this function necessary? same thing
+        return await GetTodayLectures(today);
+
+    } catch (error) {
+        return new Error(error);
+    }
 }
 
-function time_table() {
-    console.log("return time table");
+async function time_table() {
+    
+    try {
+
+        //wtf? is this function necessary? same thing
+        return await GetAllLectures();
+
+    } catch (error) {
+        return new Error(error);
+    }
 }
 
 
