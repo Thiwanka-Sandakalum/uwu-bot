@@ -1,5 +1,5 @@
 const express = require("express");
-const { upcoming_lecture, ongoing_lecture } = require("./controller/timetable_Controler");
+const { upcoming_lecture, ongoing_lecture } = require("../controller/timetable_Controler");
 
 const app = express();
 const PORT = process.env.PORT | 3000

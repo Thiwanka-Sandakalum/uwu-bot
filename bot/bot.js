@@ -76,9 +76,6 @@ bot.on('message', async (msg) => {
 
                 break
 
-            // Add more cases for other commands if needed
-
-
             case '/ongoing_lecture':
                 try {
                     const ongoing_lecture_data = await ongoing_lecture();
@@ -101,8 +98,6 @@ bot.on('message', async (msg) => {
                     console.error(error);
                     bot.sendMessage(msg.chat.id, "Error fetching timetable data.");
                 }
-            // Add more cases for other commands if needed
-
 
             default:
                 bot.sendMessage(chatId, "this is wrong command")
