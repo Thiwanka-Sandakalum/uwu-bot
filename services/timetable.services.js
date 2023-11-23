@@ -56,4 +56,18 @@ async function GetAllLectures() {
 }
 
 
+async function RequestNameChange(id , data) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await prisma.$connect();
+            const student = await prisma.students.update({where:{StudentID:id} , data:data});
+            await prisma.$disconnect();
+            resolve(student);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+
 module.exports = { getLecture , GetTodayLectures , GetAllLectures , getSlots};
