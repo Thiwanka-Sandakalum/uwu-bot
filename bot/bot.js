@@ -8,10 +8,9 @@ let timetableData = [];
 const bot = new TelegramBot(token, { polling: true });
 
 bot.on('message', async (msg) => {
-    logger.info(msg);
     const chatId = msg.chat.id;
     const username = msg.chat.first_name;
-    logger.info(username);
+    logger.info(`bot msg have recived from ${username} ID :${chatId}`);
 
     if (msg.entities && msg.entities[0].type) {
         switch (msg.text) {

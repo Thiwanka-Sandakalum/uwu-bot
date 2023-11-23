@@ -6,12 +6,11 @@ const today = daysOfWeek[now.getDay()];
 
 async function upcoming_lecture() {
 
-    logger.info("upcoming_lecture");
+    logger.info("upcoming_lecture function call");
     try {
         const timeSlots = await getSlots(today);
         const currentHour = now.getHours();
 
-        logger.info(currentHour);
         const nwest_ones = timeSlots.filter((lecture) => {
             return parseInt(lecture.TimeStart.split(":")[0]) > currentHour;
         });
