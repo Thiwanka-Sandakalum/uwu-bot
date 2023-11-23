@@ -13,10 +13,9 @@ async function upcoming_lecture() {
         const timeSlots = await getSlots(today);
         const upcomingSlots = {};
 
-        timeSlots.forEach((slot) => {
-            const upcomingSlot_hour = parseInt(slot.TimeStart.split(":")[0], 10);
-            upcomingSlots[upcomingSlot_hour] = slot.TimeStart;
-        });
+        const currentHour = now.getHours();
+
+        const nwest_ones = timeSlots.filter((lecture) => lecture.TimeStart > currentHour);
 
         let lectureFound = false;
 
@@ -51,17 +50,23 @@ async function upcoming_lecture() {
 }
 upcoming_lecture();
 
-function ongoing_lecture() {
+async function ongoing_lecture() {
     const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
 
-    console.log('Ongoing Lecture:', startTimes.find((slot) => {
-        const [hour, minute] = slot.split(/: /);
-        const slotHour = parseInt(hour);
-        const slotMinute = parseInt(minute);
+    const data = await getSlots(today);
 
-        return currentHour > slotHour || (currentHour === slotHour && currentMinute >= slotMinute);
-    }));
+    const any_ongoing = data.filter((lecture) => parseInt(lecture.TimeStart.split(":")[0]) <= currentHour && currentHour < lecture.TimeEnd.split(":")[0]);
+
+    if (any_ongoing.length != 0) {
+        const current_lecture = any_ongoing.reduce((maxObj, currentObj) => {
+            return parseInt(currentObj.TimeStart.split(":")[0]) > parseInt(maxObj.TimeStart.split(":")[0]) ? currentObj : maxObj;
+        }, any_ongoing[0]);
+
+        return current_lecture;
+    }
+    else {
+        return null;
+    }
 }
 
 async function today_timetable() {
@@ -73,13 +78,12 @@ async function today_timetable() {
     } catch (error) {
         console.log(error)
     }
-    console.log("today time table");
+
 }
 
 function time_table() {
     console.log("return time table");
 }
 
-// ongoing_lecture()
 
 module.exports = { upcoming_lecture, ongoing_lecture, today_timetable, time_table };
