@@ -1,9 +1,10 @@
-const { getLecture, GetTodayLectures, GetAllLectures, getSlots } = require('../services/timetable.services.js');
+const { GetTodayLectures, getSlots } = require('../services/timetable.services.js');
 const now = new Date();
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const today = daysOfWeek[now.getDay()];
 
 async function upcoming_lecture() {
+
     console.log("upcoming_lecture");
     try {
         const timeSlots = await getSlots(today);
@@ -14,7 +15,6 @@ async function upcoming_lecture() {
         const nwest_ones = timeSlots.filter((lecture) => {
             return parseInt(lecture.TimeStart.split(":")[0]) > currentHour;
         });
-        console.log(nwest_ones)
 
         const upcoming_lecture_data = nwest_ones.reduce((minObj, currentObj) => {
             return parseInt(currentObj.TimeStart.split(":")[0]) < parseInt(minObj.TimeStart.split(":")[0]) ? currentObj : minObj;
@@ -31,10 +31,11 @@ async function upcoming_lecture() {
 }
 
 async function ongoing_lecture() {
+
     const currentHour = now.getHours();
     const data = await getSlots(today);
 
-    const any_ongoing = await data.filter((lecture) => parseInt(lecture.TimeStart.split(":")[0]) <= currentHour && currentHour < parseInt(lecture.TimeEnd.split(":")[0]));
+    const any_ongoing = await data.filter((lecture) => parseInt(lecture.TimeStart.split(":")[0]) <= 8 && 8 < parseInt(lecture.TimeEnd.split(":")[0]));
 
     if (any_ongoing && any_ongoing.length != 0) {
         const current_lecture = await any_ongoing.reduce((maxObj, currentObj) => {
@@ -54,12 +55,8 @@ async function today_timetable() {
         data = JSON.stringify(data)
         return data;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-
-    ongoing_lecture().then((res) => {
-        console.log(res)
-    })
 }
 
 

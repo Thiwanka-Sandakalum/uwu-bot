@@ -1,5 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
-const { today_timetable, upcoming_lecture } = require('../controller/timetable_Controler');
+const { today_timetable, upcoming_lecture, ongoing_lecture } = require('../controller/timetable_controler');
 
 const token = '6973552405:AAGDFim24Yie0aaRqqmnQFXC_WhVz6202n4';
 let timetableData = [];
@@ -58,6 +58,7 @@ bot.on('message', async (msg) => {
                 try {
                     const timetableData = await upcoming_lecture();
 
+
                     let responseMessage = `
                     **Next Lecture**
 
@@ -72,7 +73,36 @@ bot.on('message', async (msg) => {
                     console.error(error);
                     bot.sendMessage(chatId, "Error fetching timetable data.");
                 }
+
                 break
+
+            // Add more cases for other commands if needed
+
+
+            case '/ongoing_lecture':
+                try {
+                    const ongoing_lecture_data = await ongoing_lecture();
+
+                    console.log(ongoing_lecture_data)
+                    if (ongoing_lecture_data !== null) {
+                        let responseMessage = `
+                        **Ongoing Lecture**
+                        - *${ongoing_lecture_data.TimeStart} - ${ongoing_lecture_data.TimeEnd}*
+                        - **Location:** ${ongoing_lecture_data.Location}
+                        - **Course:** ${ongoing_lecture_data.Courses.CourseName}
+                        - **Lecturer:** ${ongoing_lecture_data.Courses.LecturerName}`
+                        bot.sendMessage(msg.chat.id, responseMessage, { parse_mode: "Markdown" });
+                    }
+                    else {
+                        bot.sendMessage(msg.chat.id, "There is no any lecture at this time", { parse_mode: 'Markdown' });
+                    }
+                }
+                catch (error) {
+                    console.error(error);
+                    bot.sendMessage(msg.chat.id, "Error fetching timetable data.");
+                }
+            // Add more cases for other commands if needed
+
 
             default:
                 bot.sendMessage(chatId, "this is wrong command")
