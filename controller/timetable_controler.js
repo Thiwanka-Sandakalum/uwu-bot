@@ -1,16 +1,17 @@
 const { GetTodayLectures, getSlots, GetAllLectures } = require('../services/timetable.services.js');
+const logger = require('../logger/index');
 const now = new Date();
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const today = daysOfWeek[now.getDay()];
 
 async function upcoming_lecture() {
 
-    console.log("upcoming_lecture");
+    logger.info("upcoming_lecture");
     try {
         const timeSlots = await getSlots(today);
         const currentHour = now.getHours();
 
-        console.log(currentHour);
+        logger.info(currentHour);
         const nwest_ones = timeSlots.filter((lecture) => {
             return parseInt(lecture.TimeStart.split(":")[0]) > currentHour;
         });
@@ -25,7 +26,7 @@ async function upcoming_lecture() {
             return null;
         }
     } catch (error) {
-        console.log(error.message);
+        logger.error(error.message);
     }
 }
 
@@ -54,7 +55,7 @@ async function timetable() {
         data = JSON.stringify(data)
         return data;
     } catch (error) {
-        console.log(error);
+        logger.error(error);
     }
 }
 
@@ -65,7 +66,7 @@ async function today_timetable() {
         data = JSON.stringify(data)
         return data;
     } catch (error) {
-        console.log(error);
+        logger.error(error);
     }
 }
 

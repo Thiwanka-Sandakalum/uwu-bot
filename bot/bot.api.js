@@ -1,7 +1,5 @@
-// const { today_timetable, upcoming_lecture, ongoing_lecture } = require('../controller/timetable_controler');
-
 const { today_timetable, upcoming_lecture, ongoing_lecture, timetable } = require("../controller/timetable_controler");
-
+const logger  = require('../logger/index');
 
 async function sendTimeTable() {
     try {
@@ -25,12 +23,12 @@ async function sendTimeTable() {
                 bot.sendMessage(chatId, "Contact Developer!");
             }
         } else {
-            console.error('Invalid timetable data format:', timetableData);
+            logger.error('Invalid timetable data format:', timetableData);
             bot.sendMessage(chatId, "Error: Invalid timetable data format.");
         }
 
     } catch (error) {
-        console.log(error);
+        logger.log(error);
         bot.sendMessage(chatId, "Error fetching timetable data.");
     }
 }
@@ -60,12 +58,12 @@ async function sendTodaySchedule() {
                 bot.sendMessage(chatId, "No timetable data available for today.");
             }
         } else {
-            console.error('Invalid timetable data format:', timetableData);
+            logger.error('Invalid timetable data format:', timetableData);
             bot.sendMessage(chatId, "Error: Invalid timetable data format.");
         }
 
     } catch (error) {
-        console.log(error);
+        logger.log(error);
         bot.sendMessage(chatId, "Error fetching timetable data.");
     }
 }
@@ -93,7 +91,7 @@ async function sendNextLecture() {
         }
     }
     catch (error) {
-        console.error(error);
+        logger.error(error);
         bot.sendMessage(chatId, "Error fetching timetable data.");
     }
 }
@@ -103,7 +101,7 @@ async function sendOngoingLecture() {
     try {
         const ongoing_lecture_data = await ongoing_lecture();
 
-        console.log(ongoing_lecture_data)
+        logger.info(ongoing_lecture_data)
         if (ongoing_lecture_data !== null) {
             let responseMessage = `
             **Ongoing Lecture**

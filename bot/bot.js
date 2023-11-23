@@ -1,4 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
+const logger = require('../logger/index');
 const { today_timetable, upcoming_lecture, ongoing_lecture } = require('../controller/timetable_controler');
 
 const token = '6973552405:AAGDFim24Yie0aaRqqmnQFXC_WhVz6202n4';
@@ -6,10 +7,10 @@ let timetableData = [];
 const bot = new TelegramBot(token, { polling: true });
 
 bot.on('message', async (msg) => {
-    console.log(msg);
+    logger.info(msg);
     const chatId = msg.chat.id;
     const username = msg.chat.first_name;
-    console.log(username);
+    logger.info(username);
 
     if (msg.entities && msg.entities[0].type) {
         switch (msg.text) {
@@ -20,7 +21,7 @@ bot.on('message', async (msg) => {
             case '/today_schedule':
                 try {
                     timetableData = await today_timetable();
-                    console.log('Timetable Data:', timetableData);
+                    logger.info('Timetable Data:', timetableData);
 
                     // Parse the JSON string into an array
                     timetableData = JSON.parse(timetableData);
@@ -30,26 +31,23 @@ bot.on('message', async (msg) => {
                             let responseMessage = `
                         **Today's Timetable**
         
-                ${timetableData.map(({ TimeStart, TimeEnd, Location, Courses: { CourseName }, Courses: { LecturerName } }) => `
-                - *${TimeStart} - ${TimeEnd}*
-                    - **Location:** ${Location}
-                    - **Course:** ${CourseName}
-                    - **Lecturer:** ${LecturerName}
-                        `).join('')}
-                            `;
+                        ${timetableData.map(({ TimeStart, TimeEnd, Location, Courses: { CourseName }, Courses: { LecturerName } }) => `
+                        - *${TimeStart} - ${TimeEnd}*
+                            - **Location:** ${Location}
+                            - **Course:** ${CourseName}
+                            - **Lecturer:** ${LecturerName}
+                                `).join('')}`;
 
                             bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
                         } else {
                             bot.sendMessage(chatId, "No timetable data available for today.");
                         }
                     } else {
-                        console.error('Invalid timetable data format:', timetableData);
+                        logger.error('Invalid timetable data format:', timetableData);
                         bot.sendMessage(chatId, "Error: Invalid timetable data format.");
                     }
-
-                    break;
                 } catch (error) {
-                    console.log(error);
+                    logger.info(error);
                     bot.sendMessage(chatId, "Error fetching timetable data.");
                 }
                 break;
@@ -59,7 +57,7 @@ bot.on('message', async (msg) => {
                     const timetableData = await upcoming_lecture();
 
 
-                    if(timetableData !== null) {
+                    if (timetableData !== null) {
                         let responseMessage = `
                         **Next Lecture**
 
@@ -70,13 +68,12 @@ bot.on('message', async (msg) => {
                                     `
                         bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
                     }
-                    else
-                    {
+                    else {
                         bot.sendMessage(chatId, "there are no any lecture for today", { parse_mode: 'Markdown' });
                     }
                 }
                 catch (error) {
-                    console.error(error);
+                    logger.error(error);
                     bot.sendMessage(chatId, "Error fetching timetable data.");
                 }
 
@@ -86,7 +83,7 @@ bot.on('message', async (msg) => {
                 try {
                     const ongoing_lecture_data = await ongoing_lecture();
 
-                    console.log(ongoing_lecture_data)
+                    logger.info(ongoing_lecture_data)
                     if (ongoing_lecture_data !== null) {
                         let responseMessage = `
                         **Ongoing Lecture**
@@ -101,9 +98,10 @@ bot.on('message', async (msg) => {
                     }
                 }
                 catch (error) {
-                    console.error(error);
+                    logger.error(error);
                     bot.sendMessage(msg.chat.id, "Error fetching timetable data.");
                 }
+                break
 
             default:
                 bot.sendMessage(chatId, "this is wrong command")

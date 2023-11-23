@@ -1,5 +1,5 @@
 const { format, transports,createLogger } = require('winston');
-const { combine, timestamp, label, printf, errors } = format;
+const { combine, timestamp, label, printf, colorize, errors } = format;
 
 function buildDevLogger() {
     const Format = printf(({ level, message, label, timestamp, stack }) => {
@@ -13,7 +13,7 @@ function buildDevLogger() {
             errors({ stack: true }),
             Format
         ),
-        transports: [new transports.Console({ format: format.simple() })]
+        transports: [new transports.Console({ format: format.simple() })]  // Use a simple format for the console
     });
 }
 

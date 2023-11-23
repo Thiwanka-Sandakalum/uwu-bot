@@ -9,7 +9,7 @@ function buildProdLogger() {
             json()
         ),
         defaultMeta: { service: 'userService' },
-        transports: [new transports.Console()]
+        transports: [new transports.logger()]
     });
 }
 
