@@ -1,7 +1,7 @@
-// timetable_controler.js
 const { getLecture, GetTodayLectures, GetAllLectures, getSlots } = require('../services/timetable.services.js');
 const now = new Date();
 
+// const currentHour = now.getHours()
 const currentHour = now.getHours()
 let upcoming_lec;
 
@@ -49,7 +49,7 @@ async function upcoming_lecture() {
         console.log(error.message);
     }
 }
-// upcoming_lecture();
+upcoming_lecture();
 
 function ongoing_lecture() {
     const currentHour = now.getHours();
@@ -64,7 +64,15 @@ function ongoing_lecture() {
     }));
 }
 
-function today_timetable() {
+async function today_timetable() {
+    try {
+        let data = await GetTodayLectures()
+        data = JSON.stringify(data)
+        console.log(typeof (data))
+        bot.sendMessage(msg.chat.id, data)
+    } catch (error) {
+        console.log(error)
+    }
     console.log("today time table");
 }
 
@@ -72,5 +80,6 @@ function time_table() {
     console.log("return time table");
 }
 
+// ongoing_lecture()
 
 module.exports = { upcoming_lecture, ongoing_lecture, today_timetable, time_table };
