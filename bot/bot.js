@@ -1,6 +1,8 @@
 const TelegramBot = require('node-telegram-bot-api');
 const logger = require('../logger/index');
 const { today_timetable, upcoming_lecture, ongoing_lecture } = require('../controller/timetable_controler');
+require('dotenv').config();
+
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -15,11 +17,13 @@ bot.on('message', async (msg) => {
     if (msg.entities && msg.entities[0].type) {
         switch (msg.text) {
             case '/start':
+                logger.info(`${username} Joined to the bot`);
                 const wellcome_msg = `Hello ${username} Wellcome to UWU ICT Bot`
                 bot.sendMessage(chatId, wellcome_msg);
                 break;
             case '/today_schedule':
                 try {
+                    logger.info(`USER : ${username} Requested for today schedule`)
                     timetableData = await today_timetable();
                     logger.info('Timetable Data:', timetableData);
 
@@ -53,6 +57,8 @@ bot.on('message', async (msg) => {
 
             case '/next_lecture':
                 try {
+
+                    logger.info(`USER : ${username} Requested for Upcomming Lecture`)
                     const timetableData = await upcoming_lecture();
 
 
@@ -80,6 +86,7 @@ bot.on('message', async (msg) => {
 
             case '/ongoing_lecture':
                 try {
+                    logger.info(`USER : ${username} Requested for ongoing lecture`)
                     const ongoing_lecture_data = await ongoing_lecture();
 
                     logger.info(ongoing_lecture_data)
@@ -103,7 +110,8 @@ bot.on('message', async (msg) => {
                 break
 
             default:
-                bot.sendMessage(chatId, "this is wrong command")
+                bot.sendMessage(chatId, "this is wrong command");
+                logger.error(`USER : ${username} Messed  up with wrong commands`)
                 break;
         }
     }

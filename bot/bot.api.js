@@ -2,10 +2,10 @@ const { today_timetable, upcoming_lecture, ongoing_lecture, timetable } = requir
 const logger  = require('../logger/index');
 
 async function sendTimeTable() {
+
+    logger.info("Sending Time Table data...");
     try {
-
         const timetableData = await timetable();
-
 
         if (Array.isArray(timetableData)) {
             if (timetableData.length > 0) {
@@ -38,6 +38,7 @@ async function sendTimeTable() {
 
 async function sendTodaySchedule() {
     try {
+        logger.info("Sending Today Schedule...");
 
         timetableData = await today_timetable();
 
@@ -71,6 +72,9 @@ async function sendTodaySchedule() {
 
 async function sendNextLecture() {
     try {
+
+        logger.info("Sending Upcomming Lecture data...");
+
         const timetableData = await upcoming_lecture();
 
 
@@ -99,6 +103,8 @@ async function sendNextLecture() {
 
 async function sendOngoingLecture() {
     try {
+
+        logger.info("Sending Ongoing Lecture data...");
         const ongoing_lecture_data = await ongoing_lecture();
 
         logger.info(ongoing_lecture_data)

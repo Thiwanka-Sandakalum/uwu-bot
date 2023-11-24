@@ -6,7 +6,6 @@ const today = daysOfWeek[now.getDay()];
 
 async function upcoming_lecture() {
 
-    logger.info("upcoming_lecture function call");
     try {
         const timeSlots = await getSlots(today);
         const currentHour = now.getHours();
@@ -31,24 +30,29 @@ async function upcoming_lecture() {
 
 async function ongoing_lecture() {
 
-    const currentHour = now.getHours();
-    const data = await getSlots(today);
+    try {
+        const currentHour = now.getHours();
+        const data = await getSlots(today);
 
-    const any_ongoing = await data.filter((lecture) => parseInt(lecture.TimeStart.split(":")[0]) <= currentHour && currentHour < parseInt(lecture.TimeEnd.split(":")[0]));
+        const any_ongoing = await data.filter((lecture) => parseInt(lecture.TimeStart.split(":")[0]) <= currentHour && currentHour < parseInt(lecture.TimeEnd.split(":")[0]));
 
-    if (any_ongoing && any_ongoing.length != 0) {
-        const current_lecture = await any_ongoing.reduce((maxObj, currentObj) => {
-            return parseInt(currentObj.TimeStart.split(":")[0]) > parseInt(maxObj.TimeStart.split(":")[0]) ? currentObj : maxObj;
-        }, any_ongoing[0]);
+        if (any_ongoing && any_ongoing.length != 0) {
+            const current_lecture = await any_ongoing.reduce((maxObj, currentObj) => {
+                return parseInt(currentObj.TimeStart.split(":")[0]) > parseInt(maxObj.TimeStart.split(":")[0]) ? currentObj : maxObj;
+            }, any_ongoing[0]);
 
-        return current_lecture;
-    }
-    else {
-        return null;
+            return current_lecture;
+        }
+        else {
+            return null;
+        }
+    } catch (error) {
+        logger.error(error);
     }
 }
 
 async function timetable() {
+
     try {
         let data = await GetAllLectures();
         data = JSON.stringify(data)
@@ -60,6 +64,7 @@ async function timetable() {
 
 
 async function today_timetable() {
+    
     try {
         let data = await GetTodayLectures(today)
         data = JSON.stringify(data)
