@@ -17,13 +17,13 @@ bot.on('message', async (msg) => {
     if (msg.entities && msg.entities[0].type) {
         switch (msg.text) {
             case '/start':
-                logger.info(`${username} Joined to the bot`);
+                logger.info(`${msg.chat.id} Joined to the bot`);
                 const wellcome_msg = `Hello ${username} Wellcome to UWU ICT Bot`
                 bot.sendMessage(chatId, wellcome_msg);
                 break;
             case '/today_schedule':
                 try {
-                    logger.info(`USER : ${username} Requested for today schedule`)
+                    logger.info(`USER : ${msg.chat.id} Requested for today schedule`)
                     timetableData = await today_timetable();
                     logger.info('Timetable Data:', timetableData);
 
@@ -58,7 +58,7 @@ bot.on('message', async (msg) => {
             case '/next_lecture':
                 try {
 
-                    logger.info(`USER : ${username} Requested for Upcomming Lecture`)
+                    logger.info(`USER : ${msg.chat.id} Requested for Upcomming Lecture`)
                     const timetableData = await upcoming_lecture();
 
 
@@ -86,7 +86,7 @@ bot.on('message', async (msg) => {
 
             case '/ongoing_lecture':
                 try {
-                    logger.info(`USER : ${username} Requested for ongoing lecture`)
+                    logger.info(`USER : ${msg.chat.id} Requested for ongoing lecture`)
                     const ongoing_lecture_data = await ongoing_lecture();
 
                     logger.info(ongoing_lecture_data)
@@ -111,7 +111,7 @@ bot.on('message', async (msg) => {
 
             default:
                 bot.sendMessage(chatId, "this is wrong command");
-                logger.error(`USER : ${username} Messed  up with wrong commands`)
+                logger.warn(`USER ID: ${msg.chat.id} Messed  up with wrong command COMMAND :( ${msg.text} )`)
                 break;
         }
     }
