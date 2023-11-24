@@ -2,7 +2,8 @@ const TelegramBot = require('node-telegram-bot-api');
 const logger = require('../logger/index');
 const { today_timetable, upcoming_lecture, ongoing_lecture } = require('../controller/timetable_controler');
 
-const token = '6973552405:AAGDFim24Yie0aaRqqmnQFXC_WhVz6202n4';
+const token = process.env.TELEGRAM_BOT_TOKEN;
+
 let timetableData = [];
 const bot = new TelegramBot(token, { polling: true });
 
@@ -23,7 +24,6 @@ bot.on('message', async (msg) => {
                     timetableData = await today_timetable();
                     logger.info('Timetable Data:', timetableData);
 
-                    // Parse the JSON string into an array
                     timetableData = JSON.parse(timetableData);
 
                     if (Array.isArray(timetableData)) {
