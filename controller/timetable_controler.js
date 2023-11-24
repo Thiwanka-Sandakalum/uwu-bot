@@ -1,13 +1,12 @@
 const { GetTodayLectures, getSlots } = require('../services/timetable.services.js');
 const now = new Date();
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
+const today = daysOfWeek[now.getDay()];
 
 async function upcoming_lecture() {
 
     console.log("upcoming_lecture");
     try {
-        const today = daysOfWeek[now.getDay()];
         const timeSlots = await getSlots(today);
         const currentHour = now.getHours();
 
@@ -32,8 +31,6 @@ async function upcoming_lecture() {
 
 async function ongoing_lecture() {
 
-    console.log("ongoing_lecture");
-    const today = daysOfWeek[now.getDay()];
     const currentHour = now.getHours();
     const data = await getSlots(today);
 
@@ -53,12 +50,14 @@ async function ongoing_lecture() {
 
 async function today_timetable() {
     try {
-        let data = await GetTodayLectures();
-        data = JSON.stringify(data);
-        bot.sendMessage(msg.chat.id, data);
+        let data = await GetTodayLectures(today)
+        data = JSON.stringify(data)
+        return data;
     } catch (error) {
         console.log(error);
     }
 }
 
+
+// upcoming_lecture()
 module.exports = { upcoming_lecture, ongoing_lecture, today_timetable };
