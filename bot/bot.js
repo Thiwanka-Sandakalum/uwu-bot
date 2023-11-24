@@ -21,6 +21,7 @@ bot.on('message', async (msg) => {
                 const wellcome_msg = `Hello ${username} Wellcome to UWU ICT Bot`
                 bot.sendMessage(chatId, wellcome_msg);
                 break;
+                
             case '/today_schedule':
                 try {
                     logger.info(`USER : ${username} Requested for today schedule`)
