@@ -107,7 +107,6 @@ async function sendOngoingLecture() {
         logger.info("Sending Ongoing Lecture data...");
         const ongoing_lecture_data = await ongoing_lecture();
 
-        logger.info(ongoing_lecture_data)
         if (ongoing_lecture_data !== null) {
             let responseMessage = `
             **Ongoing Lecture**
@@ -122,7 +121,7 @@ async function sendOngoingLecture() {
         }
     }
     catch (error) {
-        console.error(error);
+        logger.error(error);
         bot.sendMessage(msg.chat.id, "Error fetching timetable data.");
     }
 }
