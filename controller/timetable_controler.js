@@ -34,7 +34,7 @@ async function ongoing_lecture() {
     const currentHour = now.getHours();
     const data = await getSlots(today);
 
-    const any_ongoing = await data.filter((lecture) => parseInt(lecture.TimeStart.split(":")[0]) <= currentHour && currentHour < parseInt(lecture.TimeEnd.split(":")[0]));
+    const any_ongoing = await data.filter((lecture) => parseInt(lecture.TimeStart.split(":")[0]) <= 8 && 8 < parseInt(lecture.TimeEnd.split(":")[0]));
 
     if (any_ongoing && any_ongoing.length != 0) {
         const current_lecture = await any_ongoing.reduce((maxObj, currentObj) => {
