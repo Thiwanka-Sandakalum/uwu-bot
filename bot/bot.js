@@ -59,15 +59,21 @@ bot.on('message', async (msg) => {
                     const timetableData = await upcoming_lecture();
 
 
-                    let responseMessage = `
-                    **Next Lecture**
+                    if(timetableData !== null) {
+                        let responseMessage = `
+                        **Next Lecture**
 
                         - *${timetableData.TimeStart} - ${timetableData.TimeEnd}*
                         - **Location:** ${timetableData.Location}
                         - **Course:** ${timetableData.Courses.CourseName}
                         - **Lecturer:** ${timetableData.Courses.LecturerName}
-                                `
-                    bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
+                                    `
+                        bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
+                    }
+                    else
+                    {
+                        bot.sendMessage(chatId, "there are no any lecture for today", { parse_mode: 'Markdown' });
+                    }
                 }
                 catch (error) {
                     console.error(error);
