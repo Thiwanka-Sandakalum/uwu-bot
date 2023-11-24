@@ -1,21 +1,20 @@
-const { getLecture, GetTodayLectures, GetAllLectures, getSlots } = require('../services/timetable.services.js');
+const { GetTodayLectures, getSlots } = require('../services/timetable.services.js');
 const now = new Date();
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 
 async function upcoming_lecture() {
+
     console.log("upcoming_lecture");
     try {
         const today = daysOfWeek[now.getDay()];
         const timeSlots = await getSlots(today);
-        // const currentHour = now.getHours();
-        const currentHour = 9;
+        const currentHour = now.getHours();
 
         console.log(currentHour);
         const nwest_ones = timeSlots.filter((lecture) => {
             return parseInt(lecture.TimeStart.split(":")[0]) > currentHour;
         });
-        console.log(nwest_ones)
 
         const upcoming_lecture_data = nwest_ones.reduce((minObj, currentObj) => {
             return parseInt(currentObj.TimeStart.split(":")[0]) < parseInt(minObj.TimeStart.split(":")[0]) ? currentObj : minObj;
@@ -32,6 +31,8 @@ async function upcoming_lecture() {
 }
 
 async function ongoing_lecture() {
+
+    console.log("ongoing_lecture");
     const today = daysOfWeek[now.getDay()];
     const currentHour = now.getHours();
     const data = await getSlots(today);
@@ -52,19 +53,12 @@ async function ongoing_lecture() {
 
 async function today_timetable() {
     try {
-        let data = await GetTodayLectures()
-        data = JSON.stringify(data)
-        console.log(typeof (data))
-        bot.sendMessage(msg.chat.id, data)
+        let data = await GetTodayLectures();
+        data = JSON.stringify(data);
+        bot.sendMessage(msg.chat.id, data);
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-
-    ongoing_lecture().then((res) => {
-        console.log(res)
-    })
 }
 
-
-upcoming_lecture()
 module.exports = { upcoming_lecture, ongoing_lecture, today_timetable };
