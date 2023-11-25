@@ -3,7 +3,7 @@ const TelegramBot = require('node-telegram-bot-api');
 // const { today_timetable, upcoming_lecture, ongoing_lecture } = require('../controller/timetable_controler');
 // require('dotenv').config();
 
-const token = process.env.TELEGRAM_BOT_TOKEN | "6973552405:AAGDFim24Yie0aaRqqmnQFXC_WhVz6202n4";
+const token = "6973552405:AAGDFim24Yie0aaRqqmnQFXC_WhVz6202n4";
 
 let timetableData = [];
 const bot = new TelegramBot(token, { polling: true });
