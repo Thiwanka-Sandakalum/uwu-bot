@@ -1,5 +1,15 @@
 const { today_timetable, upcoming_lecture, ongoing_lecture, timetable } = require("../controller/timetable_controler");
-const logger  = require('../logger/index');
+const logger = require('../logger/index');
+const TelegramBot = require('node-telegram-bot-api');
+require('dotenv').config();
+
+
+const token = process.env.TELEGRAM_BOT_TOKEN;
+const chatId = process.env.TELEGRAM_ID;
+
+let timetableData = [];
+const bot = new TelegramBot(token, { polling: true });
+
 
 async function sendTimeTable() {
 
@@ -7,9 +17,9 @@ async function sendTimeTable() {
     try {
         const timetableData = await timetable();
 
-        if (Array.isArray(timetableData)) {
-            if (timetableData.length > 0) {
-                let responseMessage = `
+
+        if (timetableData.length > 0) {
+            let responseMessage = `
                     **Today's Timetable**
                     
                     ${timetableData.map(({ TimeStart, TimeEnd, Location, Courses: { CourseName }, Courses: { LecturerName } }) => `
@@ -18,17 +28,14 @@ async function sendTimeTable() {
                     - **Course:** ${CourseName}
                     - **Lecturer:** ${LecturerName}`).join('')}`;
 
-                bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
-            } else {
-                bot.sendMessage(chatId, "Contact Developer!");
-            }
+            bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
         } else {
-            logger.error('Invalid timetable data format:', timetableData);
-            bot.sendMessage(chatId, "Error: Invalid timetable data format.");
+            bot.sendMessage(chatId, "Contact Developer!");
         }
 
+
     } catch (error) {
-        logger.log(error);
+        logger.error(error);
         bot.sendMessage(chatId, "Error fetching timetable data.");
     }
 }
@@ -41,11 +48,12 @@ async function sendTodaySchedule() {
         logger.info("Sending Today Schedule...");
 
         timetableData = await today_timetable();
+        console.log(typeof(timetableData));
 
 
-        if (Array.isArray(timetableData)) {
-            if (timetableData.length > 0) {
-                let responseMessage = `
+
+        if (timetableData.length > 0) {
+            let responseMessage = `
                     **Today's Timetable**
                     
                     ${timetableData.map(({ TimeStart, TimeEnd, Location, Courses: { CourseName }, Courses: { LecturerName } }) => `
@@ -54,17 +62,14 @@ async function sendTodaySchedule() {
                     - **Course:** ${CourseName}
                     - **Lecturer:** ${LecturerName}`).join('')}`;
 
-                bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
-            } else {
-                bot.sendMessage(chatId, "No timetable data available for today.");
-            }
+            // bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
         } else {
-            logger.error('Invalid timetable data format:', timetableData);
-            bot.sendMessage(chatId, "Error: Invalid timetable data format.");
+            // bot.sendMessage(chatId, "No timetable data available for today.");
         }
 
+
     } catch (error) {
-        logger.log(error);
+        logger.error(error);
         bot.sendMessage(chatId, "Error fetching timetable data.");
     }
 }
@@ -78,7 +83,7 @@ async function sendNextLecture() {
         const timetableData = await upcoming_lecture();
 
 
-        if(timetableData !== null) {
+        if (timetableData !== null) {
             let responseMessage = `
             **Next Lecture**
 
@@ -89,8 +94,7 @@ async function sendNextLecture() {
                         `
             bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
         }
-        else
-        {
+        else {
             bot.sendMessage(chatId, "there are no any lecture for today", { parse_mode: 'Markdown' });
         }
     }
@@ -106,6 +110,7 @@ async function sendOngoingLecture() {
 
         logger.info("Sending Ongoing Lecture data...");
         const ongoing_lecture_data = await ongoing_lecture();
+        console.log(ongoing_lecture_data);
 
         if (ongoing_lecture_data !== null) {
             let responseMessage = `
@@ -126,4 +131,4 @@ async function sendOngoingLecture() {
     }
 }
 
-module.exports = {sendTodaySchedule , sendNextLecture , sendOngoingLecture , sendTimeTable}
+module.exports = { sendTodaySchedule, sendNextLecture, sendOngoingLecture, sendTimeTable }

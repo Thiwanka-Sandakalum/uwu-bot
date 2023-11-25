@@ -1,4 +1,4 @@
-const { format, transports, createLogger } = require('winston');
+const { format, transports, createLogger, http } = require('winston');
 const { combine, timestamp, label, printf, colorize, errors } = format;
 
 function buildDevLogger() {
@@ -13,7 +13,10 @@ function buildDevLogger() {
             errors({ stack: true }),
             Format
         ),
-        transports: [new transports.Console({ format: combine(colorize(), Format) })]
+        transports: [
+            // new transports.Console({ format: combine(colorize(), Format) }),
+            new transports.Console({ format: combine(colorize(), Format),level:'http' })
+        ]
     });
 }
 

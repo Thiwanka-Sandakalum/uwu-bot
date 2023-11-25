@@ -5,6 +5,11 @@ const logger = require('./logger/index');
 const app = express();
 const PORT = process.env.PORT | 3000
 
+app.use((req, res, next) => {
+    logger.http(`${req.method} ${req.url}`);
+    next();
+});
+
 app.get("/api/upcomming-lecture", async (req, res) => {
     try {
 
@@ -50,5 +55,5 @@ app.get("/api/today-time-table", async (req, res) => {
 
 
 app.listen(PORT, () => {
-    logger.log(`Bot is started running on the server at PORT ${PORT}`);
+    logger.info(`Bot is started running on the server at PORT ${PORT}`);
 });

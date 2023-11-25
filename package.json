@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "controler": "nodemon ./controller/timetable_controler.js",
-    "dev": "nodemon bot/bot.js"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
