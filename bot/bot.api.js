@@ -18,21 +18,22 @@ async function sendTimeTable() {
     try {
         const timetableData = await timetable();
 
+        console.log(timetableData)
 
-        if (timetableData.length > 0) {
-            let responseMessage = `
-                    **Today's Timetable**
+        // if (timetableData.length > 0) {
+        //     let responseMessage = `
+        //             **Today's Timetable**
                     
-                    ${timetableData.map(({ TimeStart, TimeEnd, Location, Courses: { CourseName }, Courses: { LecturerName } }) => `
-                    - *${TimeStart} - ${TimeEnd}*
-                    - **Location:** ${Location}
-                    - **Course:** ${CourseName}
-                    - **Lecturer:** ${LecturerName}`).join('')}`;
+        //             ${timetableData.map(({ TimeStart, TimeEnd, Location, Courses: { CourseName }, Courses: { LecturerName } }) => `
+        //             - *${TimeStart} - ${TimeEnd}*
+        //             - **Location:** ${Location}
+        //             - **Course:** ${CourseName}
+        //             - **Lecturer:** ${LecturerName}`).join('')}`;
 
-            bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
-        } else {
-            bot.sendMessage(chatId, "Contact Developer!");
-        }
+        //     bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
+        // } else {
+        //     bot.sendMessage(chatId, "Contact Developer!");
+        // }
 
 
     } catch (error) {

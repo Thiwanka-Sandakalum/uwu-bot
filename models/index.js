@@ -7,6 +7,7 @@ const sequelize = new Sequelize({
 });
 
 const Courses = sequelize.define('Courses', {
+
   CourseCode: {
     type: DataTypes.STRING,
     primaryKey: true,
@@ -17,6 +18,7 @@ const Courses = sequelize.define('Courses', {
   LecturerName: {
     type: DataTypes.STRING,
   },
+  
 });
 
 const TimetableSlots = sequelize.define('TimetableSlots', {
