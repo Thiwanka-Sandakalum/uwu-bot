@@ -10,7 +10,7 @@ const bot = new TelegramBot(token, { polling: true });
 
 bot.on('message', async (msg) => {
 
-    console.log(msg.chat.text);
+    console.log(msg.text);
     // try {
     //     const chatId = msg.chat.id;
     //     const username = msg.chat.first_name;
