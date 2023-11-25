@@ -14,19 +14,6 @@ async function getLecture(time, day) {
   }
 }
 
-<<<<<<< HEAD
-async function getSlots(day) {
-  try {
-    const periods = await TimetableSlots.findAll({
-      where: { Day: day },
-      include: Courses,
-    });
-    console.log(periods); // corrected variable name
-    return periods;
-  } catch (error) {
-    throw error;
-  }
-=======
 async function ongoing_lecture() {
 
     try {
@@ -48,7 +35,6 @@ async function ongoing_lecture() {
     } catch (error) {
         logger.error(error);
     }
->>>>>>> 8ef727fe8511f836c27b8a4fb98de0a919fcff7a
 }
 
 async function GetTodayLectures(today) {
