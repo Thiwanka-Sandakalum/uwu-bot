@@ -1,31 +1,17 @@
-const { GetTodayLectures, getSlots, GetAllLectures } = require('../services/timetable.services.js');
-const logger = require('../logger/index');
-const now = new Date();
-const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const today = daysOfWeek[now.getDay()];
+const { Courses, TimetableSlots, Students } = require('../models');
 
-async function upcoming_lecture() {
+async function getLecture(time, day) {
+  try {
+    const period = await TimetableSlots.findOne({
+      where: { TimeStart: time, Day: day },
+      include: Courses,
+    });
+    console.log(period); // corrected variable name
 
-    try {
-        const timeSlots = await getSlots(today);
-        const currentHour = now.getHours();
-
-        const nwest_ones = timeSlots.filter((lecture) => {
-            return parseInt(lecture.TimeStart.split(":")[0]) > currentHour;
-        });
-
-        const upcoming_lecture_data = nwest_ones.reduce((minObj, currentObj) => {
-            return parseInt(currentObj.TimeStart.split(":")[0]) < parseInt(minObj.TimeStart.split(":")[0]) ? currentObj : minObj;
-        }, nwest_ones[0]);
-
-        if (upcoming_lecture_data && upcoming_lecture_data.length !== 0) {
-            return upcoming_lecture_data;
-        } else {
-            return null;
-        }
-    } catch (error) {
-        logger.error(error.message);
-    }
+    return period;
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function ongoing_lecture() {
@@ -51,26 +37,44 @@ async function ongoing_lecture() {
     }
 }
 
-async function timetable() {
-
-    try {
-        let data = await GetAllLectures();
-        return data;
-    } catch (error) {
-        logger.error(error);
-    }
+async function GetTodayLectures(today) {
+  try {
+    const todayLectures = await TimetableSlots.findAll({
+      where: { Day: today },
+      include: Courses,
+    });
+    return todayLectures;
+  } catch (error) {
+    throw error;
+  }
 }
 
-
-async function today_timetable() {
-    
-    try {
-        let data = await GetTodayLectures(today)
-        return data;
-    } catch (error) {
-        logger.error(error);
-    }
+async function GetAllLectures() {
+  try {
+    const allLectures = await TimetableSlots.findAll({
+      include: Courses,
+    });
+    return allLectures;
+  } catch (error) {
+    throw error;
+  }
 }
 
+async function RequestNameChange(id, data) {
+  try {
+    const student = await Students.update(data, {
+      where: { StudentID: id },
+    });
+    return student;
+  } catch (error) {
+    throw error;
+  }
+}
 
-module.exports = { upcoming_lecture, ongoing_lecture, today_timetable , timetable};
+module.exports = {
+  getLecture,
+  GetTodayLectures,
+  GetAllLectures,
+  getSlots,
+  RequestNameChange,
+};

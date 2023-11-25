@@ -3,11 +3,10 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: '../data.db',
+  storage: 'data.db',
 });
 
 const Courses = sequelize.define('Courses', {
-
   CourseCode: {
     type: DataTypes.STRING,
     primaryKey: true,
@@ -18,7 +17,6 @@ const Courses = sequelize.define('Courses', {
   LecturerName: {
     type: DataTypes.STRING,
   },
-  
 });
 
 const TimetableSlots = sequelize.define('TimetableSlots', {
@@ -45,8 +43,8 @@ const TimetableSlots = sequelize.define('TimetableSlots', {
   },
   Location: {
     type: DataTypes.STRING,
-  }
-} , {tableName: 'TimetableSlots'});
+  },
+});
 
 const Students = sequelize.define('Students', {
   StudentID: {
@@ -74,4 +72,19 @@ const Students = sequelize.define('Students', {
 Courses.hasMany(TimetableSlots, { foreignKey: 'CourseCode' });
 TimetableSlots.belongsTo(Courses, { foreignKey: 'CourseCode' });
 
+// ...
+
+// Connection logic
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+    console.log('Models synchronized with the database.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+})();
+
 module.exports = { sequelize, Courses, TimetableSlots, Students };
+
+
