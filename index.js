@@ -45,7 +45,7 @@ app.get("/api/time-table", async (req, res) => {
 
 app.get("/api/today-time-table", async (req, res) => {
     try {
-
+        
         await sendTodaySchedule();
         res.json({ status: "DONE" });
     } catch (error) {

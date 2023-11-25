@@ -55,7 +55,6 @@ async function timetable() {
 
     try {
         let data = await GetAllLectures();
-        data = JSON.stringify(data)
         return data;
     } catch (error) {
         logger.error(error);
@@ -67,7 +66,6 @@ async function today_timetable() {
     
     try {
         let data = await GetTodayLectures(today)
-        data = JSON.stringify(data)
         return data;
     } catch (error) {
         logger.error(error);

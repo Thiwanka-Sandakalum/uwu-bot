@@ -1,6 +1,7 @@
 const { today_timetable, upcoming_lecture, ongoing_lecture, timetable } = require("../controller/timetable_controler");
 const logger = require('../logger/index');
 const TelegramBot = require('node-telegram-bot-api');
+
 require('dotenv').config();
 
 
@@ -48,8 +49,6 @@ async function sendTodaySchedule() {
         logger.info("Sending Today Schedule...");
 
         timetableData = await today_timetable();
-        console.log(typeof(timetableData));
-
 
 
         if (timetableData.length > 0) {
@@ -62,9 +61,9 @@ async function sendTodaySchedule() {
                     - **Course:** ${CourseName}
                     - **Lecturer:** ${LecturerName}`).join('')}`;
 
-            // bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
+            bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
         } else {
-            // bot.sendMessage(chatId, "No timetable data available for today.");
+            bot.sendMessage(chatId, "No timetable data available for today.");
         }
 
 
@@ -90,8 +89,8 @@ async function sendNextLecture() {
             - *${timetableData.TimeStart} - ${timetableData.TimeEnd}*
             - **Location:** ${timetableData.Location}
             - **Course:** ${timetableData.Courses.CourseName}
-            - **Lecturer:** ${timetableData.Courses.LecturerName}
-                        `
+            - **Lecturer:** ${timetableData.Courses.LecturerName}`;
+
             bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
         }
         else {
@@ -106,6 +105,7 @@ async function sendNextLecture() {
 
 
 async function sendOngoingLecture() {
+
     try {
 
         logger.info("Sending Ongoing Lecture data...");
@@ -119,11 +119,13 @@ async function sendOngoingLecture() {
             - **Location:** ${ongoing_lecture_data.Location}
             - **Course:** ${ongoing_lecture_data.Courses.CourseName}
             - **Lecturer:** ${ongoing_lecture_data.Courses.LecturerName}`
+            
             bot.sendMessage(msg.chat.id, responseMessage, { parse_mode: "Markdown" });
         }
         else {
             bot.sendMessage(msg.chat.id, "There is no any lecture at this time", { parse_mode: 'Markdown' });
         }
+
     }
     catch (error) {
         logger.error(error);
