@@ -43,8 +43,8 @@ const TimetableSlots = sequelize.define('TimetableSlots', {
   },
   Location: {
     type: DataTypes.STRING,
-  },
-});
+  }
+} , {tableName: 'TimetableSlots'});
 
 const Students = sequelize.define('Students', {
   StudentID: {
