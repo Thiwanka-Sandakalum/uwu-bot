@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 // const Client = require('@prisma/client');
 // const prisma = new Client.PrismaClient();
 // const logger  = require('../logger/index');
@@ -154,7 +152,6 @@
 // };
 
 
->>>>>>> 8ef727fe8511f836c27b8a4fb98de0a919fcff7a
 // controllers/timetableController.js
 const db = require('../db');
 
