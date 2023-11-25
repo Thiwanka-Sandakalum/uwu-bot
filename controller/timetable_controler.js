@@ -14,6 +14,7 @@ async function getLecture(time, day) {
   }
 }
 
+<<<<<<< HEAD
 async function getSlots(day) {
   try {
     const periods = await TimetableSlots.findAll({
@@ -25,6 +26,29 @@ async function getSlots(day) {
   } catch (error) {
     throw error;
   }
+=======
+async function ongoing_lecture() {
+
+    try {
+        const currentHour = 11;
+        const data = await getSlots("Monday");
+
+        const any_ongoing = await data.filter((lecture) => parseInt(lecture.TimeStart.split(":")[0]) <= currentHour && currentHour < parseInt(lecture.TimeEnd.split(":")[0]));
+
+        if (any_ongoing && any_ongoing.length != 0) {
+            const current_lecture = await any_ongoing.reduce((maxObj, currentObj) => {
+                return parseInt(currentObj.TimeStart.split(":")[0]) > parseInt(maxObj.TimeStart.split(":")[0]) ? currentObj : maxObj;
+            }, any_ongoing[0]);
+
+            return current_lecture;
+        }
+        else {
+            return null;
+        }
+    } catch (error) {
+        logger.error(error);
+    }
+>>>>>>> 8ef727fe8511f836c27b8a4fb98de0a919fcff7a
 }
 
 async function GetTodayLectures(today) {

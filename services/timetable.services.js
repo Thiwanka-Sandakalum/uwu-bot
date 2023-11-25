@@ -1,3 +1,160 @@
+<<<<<<< HEAD
+=======
+// const Client = require('@prisma/client');
+// const prisma = new Client.PrismaClient();
+// const logger  = require('../logger/index');
+
+// async function getLecture(time, day) {
+//     logger.info("find : ", time, day);
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             await prisma.$connect();
+//             const period = await prisma.timetableSlots.findFirst({ where: { TimeStart: time, Day: day }, include: { Courses: true } });
+//             await prisma.$disconnect();
+//             resolve(period);
+//         } catch (error) {
+//             reject(error);
+//         }
+//     });
+// }
+
+
+// async function getSlots(day) {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             await prisma.$connect();
+//             const period = await prisma.timetableSlots.findMany({ where: { Day: day }, include: { Courses: true } });
+//             await prisma.$disconnect();
+//             resolve(period);
+//         } catch (error) {
+//             reject(error);
+//         }
+//     });
+// }
+
+
+// async function GetTodayLectures(today) {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             await prisma.$connect();
+//             const today_lectures = await prisma.timetableSlots.findMany({ where: { Day: today }, include: { Courses: true } });
+//             await prisma.$disconnect();
+//             resolve(today_lectures);
+//         } catch (error) {
+//             reject(error);
+//         }
+//     });
+// }
+
+// async function GetAllLectures() {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             await prisma.$connect();
+//             const all_lectures = await prisma.timetableSlots.findMany({ include: { Courses: true } });
+//             await prisma.$disconnect();
+//             resolve(all_lectures);
+//         } catch (error) {
+//             reject(error);
+//         }
+//     });
+// }
+
+
+
+// async function RequestNameChange(id, data) {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             await prisma.$connect();
+//             const student = await prisma.students.update({ where: { StudentID: id }, data: data });
+//             await prisma.$disconnect();
+//             resolve(student);
+//         } catch (error) {
+//             reject(error);
+//         }
+//     });
+// }
+
+// module.exports = { getLecture, GetTodayLectures, GetAllLectures, getSlots,RequestNameChange };
+
+
+
+
+// // controllers/timetableController.js
+// const { Courses, TimetableSlots, Students } = require('../models/index');
+
+// async function getLecture(time, day) {
+//   try {
+//     const period = await TimetableSlots.findOne({
+//       where: { TimeStart: time, Day: day },
+//       include: Courses,
+//     });
+//     return period;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+// async function getSlots(day) {
+//   try {
+//     const periods = await TimetableSlots.findAll({
+//       where: { Day: day },
+//       include: Courses,
+//     });
+//     return periods;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+// async function GetTodayLectures(today) {
+//   try {
+//     const todayLectures = await TimetableSlots.findAll({
+//       where: { Day: today },
+//       include: Courses,
+//     });
+//     return todayLectures;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+// async function GetAllLectures() {
+//   try {
+//     const allLectures = await TimetableSlots.findAll({
+//       include: Courses,
+//     });
+//     return allLectures;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+// async function RequestNameChange(id, data) {
+//   try {
+//     const student = await Students.update(data, {
+//       where: { StudentID: id },
+//     });
+//     return student;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
+
+// getLecture("10:00:00" , "Monday").then((res) => {
+//   console.log(res)
+// })
+
+// module.exports = {
+//   getLecture,
+//   GetTodayLectures,
+//   GetAllLectures,
+//   getSlots,
+//   RequestNameChange,
+// };
+
+
+>>>>>>> 8ef727fe8511f836c27b8a4fb98de0a919fcff7a
 // controllers/timetableController.js
 const db = require('../db');
 
@@ -6,7 +163,8 @@ async function getLecture(time, day) {
     const query = `
       SELECT *
       FROM TimetableSlots
-      WHERE TimeStart = ? AND Day = ?
+      INNER JOIN Courses ON TimetableSlots.CourseCode = Courses.CourseCode
+      WHERE TimetableSlots.TimeStart = ? AND TimetableSlots.Day = ?
     `;
 
     db.get(query, [time, day], (err, row) => {
@@ -24,7 +182,8 @@ async function getSlots(day) {
     const query = `
       SELECT *
       FROM TimetableSlots
-      WHERE Day = ?
+      INNER JOIN Courses ON TimetableSlots.CourseCode = Courses.CourseCode
+      WHERE TimetableSlots.Day = ?
     `;
 
     db.all(query, [day], (err, rows) => {
@@ -42,7 +201,8 @@ async function GetTodayLectures(today) {
     const query = `
       SELECT *
       FROM TimetableSlots
-      WHERE Day = ?
+      INNER JOIN Courses ON TimetableSlots.CourseCode = Courses.CourseCode
+      WHERE TimetableSlots.Day = ?
     `;
 
     db.all(query, [today], (err, rows) => {
@@ -60,6 +220,7 @@ async function GetAllLectures() {
     const query = `
       SELECT *
       FROM TimetableSlots
+      INNER JOIN Courses ON TimetableSlots.CourseCode = Courses.CourseCode
     `;
 
     db.all(query, (err, rows) => {
@@ -89,11 +250,6 @@ async function RequestNameChange(id, data) {
     });
   });
 }
-
-
-getSlots("Monday").then((res) => {
-  console.log(res)
-})
 
 module.exports = {
   getLecture,
