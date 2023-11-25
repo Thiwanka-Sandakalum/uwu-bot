@@ -5,8 +5,8 @@ const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 
 
-const token = process.env.TELEGRAM_BOT_TOKEN;
-const chatId = process.env.TELEGRAM_ID;
+const token = "6973552405:AAGDFim24Yie0aaRqqmnQFXC_WhVz6202n4";
+const chatId = "6275667988";
 
 let timetableData = [];
 const bot = new TelegramBot(token, { polling: true });
@@ -109,7 +109,7 @@ async function sendOngoingLecture() {
 
         logger.info("Sending Ongoing Lecture data...");
         const ongoing_lecture_data = await ongoing_lecture();
-        
+
         if (ongoing_lecture_data !== null) {
             let responseMessage = `
             **Ongoing Lecture**
