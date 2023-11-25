@@ -31,8 +31,8 @@ async function upcoming_lecture() {
 async function ongoing_lecture() {
 
     try {
-        const currentHour = now.getHours();
-        const data = await getSlots(today);
+        const currentHour = 11;
+        const data = await getSlots("Monday");
 
         const any_ongoing = await data.filter((lecture) => parseInt(lecture.TimeStart.split(":")[0]) <= currentHour && currentHour < parseInt(lecture.TimeEnd.split(":")[0]));
 

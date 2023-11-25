@@ -152,7 +152,6 @@
 // };
 
 
-
 // controllers/timetableController.js
 const db = require('../db');
 
@@ -161,7 +160,8 @@ async function getLecture(time, day) {
     const query = `
       SELECT *
       FROM TimetableSlots
-      WHERE TimeStart = ? AND Day = ?
+      INNER JOIN Courses ON TimetableSlots.CourseCode = Courses.CourseCode
+      WHERE TimetableSlots.TimeStart = ? AND TimetableSlots.Day = ?
     `;
 
     db.get(query, [time, day], (err, row) => {
@@ -179,7 +179,8 @@ async function getSlots(day) {
     const query = `
       SELECT *
       FROM TimetableSlots
-      WHERE Day = ?
+      INNER JOIN Courses ON TimetableSlots.CourseCode = Courses.CourseCode
+      WHERE TimetableSlots.Day = ?
     `;
 
     db.all(query, [day], (err, rows) => {
@@ -197,7 +198,8 @@ async function GetTodayLectures(today) {
     const query = `
       SELECT *
       FROM TimetableSlots
-      WHERE Day = ?
+      INNER JOIN Courses ON TimetableSlots.CourseCode = Courses.CourseCode
+      WHERE TimetableSlots.Day = ?
     `;
 
     db.all(query, [today], (err, rows) => {
@@ -215,6 +217,7 @@ async function GetAllLectures() {
     const query = `
       SELECT *
       FROM TimetableSlots
+      INNER JOIN Courses ON TimetableSlots.CourseCode = Courses.CourseCode
     `;
 
     db.all(query, (err, rows) => {
@@ -244,11 +247,6 @@ async function RequestNameChange(id, data) {
     });
   });
 }
-
-
-getSlots("Monday").then((res) => {
-  console.log(res)
-})
 
 module.exports = {
   getLecture,
