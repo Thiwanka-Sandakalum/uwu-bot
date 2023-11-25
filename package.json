@@ -17,6 +17,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "node-telegram-bot-api": "^0.64.0",
+    "sqlite3": "file:./napi-v3-linux-glibc-arm64",
     "winston": "^3.11.0"
   }
 }
