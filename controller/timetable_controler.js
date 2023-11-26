@@ -32,7 +32,10 @@ async function getLecture(time, day) {
         } catch (error) {
             logger.error(error.message);
         }
-    }}
+    } catch (error) {
+        logger.error(error.message);
+    }
+}
 
 async function ongoing_lecture() {
 
@@ -82,5 +85,6 @@ async function today_timetable() {
 module.exports = {
     getLecture,
     GetTodayLectures,
-    GetAllLectures
+    GetAllLectures,
+    today_timetable
 };
