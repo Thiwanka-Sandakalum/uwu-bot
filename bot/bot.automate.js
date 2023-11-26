@@ -1,10 +1,8 @@
 const cron = require('node-cron');
-const TelegramBot = require('node-telegram-bot-api');
+const {bot}=require('./bot');
 const { upcoming_lecture, ongoing_lecture, today_timetable, timetable } = require('../controller/timetable_controler');
 
 const chatID = '6275667988';
-const token = '6973552405:AAGDFim24Yie0aaRqqmnQFXC_WhVz6202n4';
-const bot = new TelegramBot(token, { polling: true });
 
 cron.schedule(' * * * * *', async () => {
     try {

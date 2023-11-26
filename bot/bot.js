@@ -138,3 +138,5 @@ bot.on('message', async (msg) => {
         logger.error(error);
     }
 });
+
+module.exports={bot}
