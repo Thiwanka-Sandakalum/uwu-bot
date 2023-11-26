@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "controler": "nodemon ./controller/timetable_controler.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon ./bot/bot.js"
   },
   "keywords": [],
   "author": "",

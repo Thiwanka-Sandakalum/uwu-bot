@@ -3,16 +3,14 @@ const { sendTodaySchedule, sendOngoingLecture, sendNextLecture, sendTimeTable } 
 const logger = require('./logger/index');
 const cron = require('node-cron');
 
-
 const app = express();
 const PORT = process.env.PORT | 3000
 
 
+cron.schedule('*/5 * * * * *', async () => {
+    await sendNextLecture();
+});
 
-
-// cron.schedule('*/5 * * * * *', async () => {
-//     await sendNextLecture();
-// });
 
 app.use((req, res, next) => {
     logger.http(`${req.method} ${req.url}`);
