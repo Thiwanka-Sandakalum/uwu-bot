@@ -78,6 +78,8 @@ bot.on('message', async (msg) => {
                         logger.info(`USER: ${msg.chat.id} Requested for Upcoming Lecture`);
                         const timetableData = await upcoming_lecture();
 
+                        console.log(timetableData)
+
                         if (timetableData !== null) {
                             let responseMessage = `
                                 <b>Next Lecture</b>
