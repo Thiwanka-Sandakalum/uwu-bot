@@ -37,9 +37,10 @@ bot.on('message', async (msg) => {
                         logger.info('Timetable Data:', timetableData);
 
                         if (Array.isArray(timetableData)) {
+
                             if (timetableData.length > 0) {
 
-                                timetableData = JSON.parse(timetableData);
+                                // timetableData = JSON.parse(timetableData);
 
                                 let responseMessage = `
                                     **Today's Timetable**
