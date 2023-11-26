@@ -10,18 +10,16 @@ cron.schedule('0 7,8,10,12 * * 1-5', async () => {
         const timetableData = await upcoming_lecture();
 
         if (timetableData !== null) {
-            let responseMessage = `
-                <b>Next Lecture</b>
-
-                <b>${ongoing_lecture_data.Day}</b>\n
-                <b>${ongoing_lecture_data.TimeStart} - ${ongoing_lecture_data.TimeEnd}</b>\n
-                <b>📚 ${ongoing_lecture_data.CourseName}</b>
-                <i>👨‍🏫 ${ongoing_lecture_data.LecturerName}</i>
-                <i>🏫 ${ongoing_lecture_data.Location.substring(0,20)} ...</i>
-            `;
+            let responseMessage = 
+                                `**Next Lecture**\n
+**${timetableData.Day}**
+**${timetableData.TimeStart} - ${timetableData.TimeEnd}**\n
+- **📚 ${timetableData.CourseName}**
+- **👨‍🏫 ${timetableData.LecturerName}**
+- **🏫 ${timetableData.Location}**`;
             bot.sendMessage(chatID, responseMessage, { parse_mode: 'HTML' });
         } else {
-            bot.sendMessage(chatID, "There are no any lectures for today", { parse_mode: 'HTML' });
+            bot.sendMessage(chatID, "There are no any lectures for today", { parse_mode: 'Markdown' });
         }
     } catch (error) {
         logger.error(error);
