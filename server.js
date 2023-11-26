@@ -2,10 +2,10 @@ const cron = require('node-cron');
 const bot = require('./bot/bot');
 const { upcoming_lecture } = require('./controller/timetable_controler');
 const api = require('./api/index');
-const chatID = '1356513283';
+const chatID = ['1356513283', '6275667988'];
 
 
-cron.schedule('*/5 * * * * *', async () => {
+cron.schedule('0 7,8,9,12 * * 1-5', async () => {
     try {
         const timetableData = await upcoming_lecture();
 
@@ -16,13 +16,20 @@ ${timetableData.TimeStart} - ${timetableData.TimeEnd}\n
 - 📚 ${timetableData.CourseName}
 - 👨‍🏫 ${timetableData.LecturerName}
 - 🏫 ${timetableData.Location}`;
-            bot.sendMessage(chatID, responseMessage, { parse_mode: 'HTML' });
+
+            chatID.forEach(id => {
+                console.log('Sending message to chat ID:', id);
+                bot.sendMessage(id, responseMessage, { parse_mode: 'HTML' });
+            });
+
         } else {
-            // bot.sendMessage(chatID, "There are no any lectures for today", { parse_mode: 'HTML' });
+            return
         }
     } catch (error) {
-        logger.error(error);
-        bot.sendMessage(chatID, "The Bot is sleeping now");
+        chatID.forEach(id => {
+            logger.error(error);
+            bot.sendMessage(id, "The Bot is sleeping now");
+        });
     }
 }, {
     timezone: 'Asia/Colombo'
