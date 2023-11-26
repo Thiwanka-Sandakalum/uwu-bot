@@ -1,15 +1,11 @@
 const { today_timetable, upcoming_lecture, ongoing_lecture, timetable } = require("../controller/timetable_controler");
 const logger = require('../logger/index');
-const TelegramBot = require('node-telegram-bot-api');
-
+const { bot } = require('../bot/bot')
 require('dotenv').config();
 
-
-const token = process.env.TELEGRAM_BOT_TOKEN;
 const chatId = process.env.TELEGRAM_ID;
 
 let timetableData = [];
-const bot = new TelegramBot(token, { polling: true });
 
 
 async function sendTimeTable() {
@@ -20,7 +16,7 @@ async function sendTimeTable() {
 
         if (timetableData.length > 0) {
             let responseMessage = `
-                    ${timetableData.map(({ Day , TimeStart, TimeEnd, Location, CourseName , LecturerName }) => `
+                    ${timetableData.map(({ Day, TimeStart, TimeEnd, Location, CourseName, LecturerName }) => `
                     <b>${Day}</b>\n
                     <b>${TimeStart} - ${TimeEnd}</b>\n
                     <b>📚 ${CourseName}</b>
@@ -52,7 +48,7 @@ async function sendTodaySchedule() {
             let responseMessage = `
                     <b>Today Time Table 📅</b>
                     
-                    ${timetableData.map(({ TimeStart, TimeEnd, Location, CourseName , LecturerName }) => `
+                    ${timetableData.map(({ TimeStart, TimeEnd, Location, CourseName, LecturerName }) => `
                         <b>${TimeStart} - ${TimeEnd}</b>\n
                         <b>📚 ${CourseName}</b>
                         <i>👨‍🏫 ${LecturerName}</i>
@@ -116,7 +112,7 @@ async function sendOngoingLecture() {
             - **Location:** ${ongoing_lecture_data.Location}
             - **Course:** ${ongoing_lecture_data.CourseName}
             - **Lecturer:** ${ongoing_lecture_data.LecturerName}`
-            
+
             bot.sendMessage(chatId, responseMessage, { parse_mode: "Markdown" });
         }
         else {

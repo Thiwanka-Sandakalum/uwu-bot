@@ -1,10 +1,11 @@
 const cron = require('node-cron');
-const {bot}=require('./bot');
-const { upcoming_lecture, ongoing_lecture, today_timetable, timetable } = require('../controller/timetable_controler');
-
+const bot = require('./bot/bot');
+const { upcoming_lecture } = require('./controller/timetable_controler');
+const api = require('./api/index');
 const chatID = '6275667988';
 
-cron.schedule(' * * * * *', async () => {
+
+cron.schedule('0 7,8,10,12 * * 1-5', async () => {
     try {
         const timetableData = await upcoming_lecture();
 
@@ -17,7 +18,6 @@ cron.schedule(' * * * * *', async () => {
                 - **Course:** ${timetableData.CourseName}
                 - **Lecturer:** ${timetableData.LecturerName}
             `;
-            console.log((timetableData));
             bot.sendMessage(chatID, responseMessage, { parse_mode: 'Markdown' });
         } else {
             bot.sendMessage(chatID, "There are no any lectures for today", { parse_mode: 'Markdown' });
@@ -26,4 +26,6 @@ cron.schedule(' * * * * *', async () => {
         logger.error(error);
         bot.sendMessage(chatID, "Error fetching timetable data.");
     }
+}, {
+    timezone: 'Asia/Colombo'
 });

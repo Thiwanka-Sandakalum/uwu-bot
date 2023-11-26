@@ -1,15 +1,9 @@
 const express = require("express");
-const { sendTodaySchedule, sendOngoingLecture, sendNextLecture, sendTimeTable } = require("./bot/bot.api");
-const logger = require('./logger/index');
-const cron = require('node-cron');
+const { sendTodaySchedule, sendOngoingLecture, sendNextLecture, sendTimeTable } = require("./botApi");
+const logger = require('../logger/index');
 
 const app = express();
 const PORT = process.env.PORT | 3000
-
-
-cron.schedule('*/5 * * * * *', async () => {
-    await sendNextLecture();
-});
 
 
 app.use((req, res, next) => {
