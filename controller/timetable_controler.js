@@ -4,6 +4,9 @@ const now = new Date();
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const today = daysOfWeek[now.getDay()];
 
+
+
+
 async function upcoming_lecture() {
 
     try {
@@ -65,7 +68,7 @@ async function timetable() {
 async function today_timetable() {
     
     try {
-        let data = await GetTodayLectures("Monday")
+        let data = await GetTodayLectures(today)
         return data;
     } catch (error) {
         logger.error(error);
