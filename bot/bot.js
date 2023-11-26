@@ -34,14 +34,15 @@ bot.on('message', async (msg) => {
                         timetableData = await today_timetable();
                         logger.info('Timetable Data:', timetableData);
 
-                        timetableData = JSON.parse(timetableData);
-
                         if (Array.isArray(timetableData)) {
                             if (timetableData.length > 0) {
+
+                                timetableData = JSON.parse(timetableData);
+
                                 let responseMessage = `
                                     **Today's Timetable**
 
-                                    ${timetableData.map(({ TimeStart, TimeEnd, Location, Courses: { CourseName }, Courses: { LecturerName } }) => `
+                                    ${timetableData.map(({ TimeStart, TimeEnd, Location, CourseName , LecturerName }) => `
                                         - *${TimeStart} - ${TimeEnd}*
                                         - **Location:** ${Location}
                                         - **Course:** ${CourseName}
@@ -83,8 +84,8 @@ bot.on('message', async (msg) => {
 
                                 - *${timetableData.TimeStart} - ${timetableData.TimeEnd}*
                                 - **Location:** ${timetableData.Location}
-                                - **Course:** ${timetableData.Courses.CourseName}
-                                - **Lecturer:** ${timetableData.Courses.LecturerName}
+                                - **Course:** ${timetableData.CourseName}
+                                - **Lecturer:** ${timetableData.LecturerName}
                             `;
                             bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
                         } else {
@@ -109,12 +110,12 @@ bot.on('message', async (msg) => {
                                 **Ongoing Lecture**
                                 - *${ongoing_lecture_data.TimeStart} - ${ongoing_lecture_data.TimeEnd}*
                                 - **Location:** ${ongoing_lecture_data.Location}
-                                - **Course:** ${ongoing_lecture_data.Courses.CourseName}
-                                - **Lecturer:** ${ongoing_lecture_data.Courses.LecturerName}
+                                - **Course:** ${ongoing_lecture_data.CourseName}
+                                - **Lecturer:** ${ongoing_lecture_data.LecturerName}
                             `;
                             bot.sendMessage(msg.chat.id, responseMessage, { parse_mode: "Markdown" });
                         } else {
-                            bot.sendMessage(msg.chat.id, "There is no ongoing lecture at this time", { parse_mode: 'Markdown' });
+                            bot.sendMessage(msg.chat.id, "There is no any ongoing lecture at this time", { parse_mode: 'Markdown' });
                         }
                     } catch (error) {
                         // Log any errors that occur during fetching timetable data
