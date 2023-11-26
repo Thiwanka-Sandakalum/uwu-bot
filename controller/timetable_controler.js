@@ -4,36 +4,24 @@ const now = new Date();
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const today = daysOfWeek[now.getDay()];
 
+async function upcoming_lecture() {
 
-
-
-async function getLecture(time, day) {
     try {
-        const period = await TimetableSlots.findOne({
-            where: { TimeStart: time, Day: day },
-            include: Courses,
+        const timeSlots = await getSlots(today);
+        const currentHour = now.getHours();
+
+        const nwest_ones = timeSlots.filter((lecture) => {
+            return parseInt(lecture.TimeStart.split(":")[0]) > currentHour;
         });
-        console.log(period);
 
-        try {
-            const timeSlots = await getSlots(today);
-            const currentHour = now.getHours();
+        const upcoming_lecture_data = nwest_ones.reduce((minObj, currentObj) => {
+            return parseInt(currentObj.TimeStart.split(":")[0]) < parseInt(minObj.TimeStart.split(":")[0]) ? currentObj : minObj;
+        }, nwest_ones[0]);
 
-            const nwest_ones = timeSlots.filter((lecture) => {
-                return parseInt(lecture.TimeStart.split(":")[0]) > currentHour;
-            });
-
-            const upcoming_lecture_data = nwest_ones.reduce((minObj, currentObj) => {
-                return parseInt(currentObj.TimeStart.split(":")[0]) < parseInt(minObj.TimeStart.split(":")[0]) ? currentObj : minObj;
-            }, nwest_ones[0]);
-
-            if (upcoming_lecture_data && upcoming_lecture_data.length !== 0) {
-                return upcoming_lecture_data;
-            } else {
-                return null;
-            }
-        } catch (error) {
-            logger.error(error.message);
+        if (upcoming_lecture_data && upcoming_lecture_data.length !== 0) {
+            return upcoming_lecture_data;
+        } else {
+            return null;
         }
     } catch (error) {
         logger.error(error.message);
@@ -75,7 +63,7 @@ async function timetable() {
 
 
 async function today_timetable() {
-
+    
     try {
         let data = await GetTodayLectures(today)
         return data;
@@ -85,9 +73,4 @@ async function today_timetable() {
 }
 
 
-module.exports = {
-    getLecture,
-    GetTodayLectures,
-    GetAllLectures,
-    today_timetable
-};
+module.exports = { upcoming_lecture, ongoing_lecture, today_timetable , timetable};
