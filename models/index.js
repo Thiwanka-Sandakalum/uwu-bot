@@ -1,4 +1,3 @@
-// models/index.js
 const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize({
@@ -68,13 +67,10 @@ const Students = sequelize.define('Students', {
   },
 });
 
-// Define associations
 Courses.hasMany(TimetableSlots, { foreignKey: 'CourseCode' });
 TimetableSlots.belongsTo(Courses, { foreignKey: 'CourseCode' });
 
-// ...
 
-// Connection logic
 (async () => {
   try {
     await sequelize.authenticate();

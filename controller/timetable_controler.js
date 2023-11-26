@@ -6,7 +6,7 @@ async function getLecture(time, day) {
       where: { TimeStart: time, Day: day },
       include: Courses,
     });
-    console.log(period); // corrected variable name
+    console.log(period);
 
     return period;
   } catch (error) {
@@ -75,6 +75,5 @@ module.exports = {
   getLecture,
   GetTodayLectures,
   GetAllLectures,
-  getSlots,
   RequestNameChange,
 };
