@@ -21,7 +21,7 @@ async function sendTimeTable() {
                     <b>${TimeStart} - ${TimeEnd}</b>\n
                     <b>📚 ${CourseName}</b>
                     <i>👨‍🏫 ${LecturerName}</i>
-                    <i>🏫 ${Location}</i>`).join('\n')}`;
+                    <i>🏫 ${Location.substring(0,20)}</i>`).join('\n')}`;
 
             bot.sendMessage(chatId, `<b>Time Table 📅</b>`, { parse_mode: 'HTML' });
 
@@ -47,12 +47,12 @@ async function sendTodaySchedule() {
         if (timetableData.length > 0) {
             let responseMessage = `
                     <b>Today Time Table 📅</b>
-                    
-                    ${timetableData.map(({ TimeStart, TimeEnd, Location, CourseName, LecturerName }) => `
+                    \n
+                    ${timetableData.map(({ Day ,TimeStart, TimeEnd, Location, CourseName , LecturerName }) => `
                         <b>${TimeStart} - ${TimeEnd}</b>\n
                         <b>📚 ${CourseName}</b>
                         <i>👨‍🏫 ${LecturerName}</i>
-                        <i>🏫 ${Location}</i>
+                        <i>🏫 ${Location.substring(0,20)}</i>
                     `).join('\n')}`;
 
             bot.sendMessage(chatId, responseMessage, { parse_mode: "HTML" });
@@ -78,14 +78,14 @@ async function sendNextLecture() {
 
         if (timetableData !== null) {
             let responseMessage = `
-            **Next Lecture**
+            <b>Next Lecture</b>
+            \n
+            <b>${timetableData.TimeStart} - ${timetableData.TimeEnd}</b>\n
+            <b>📚 ${timetableData.CourseName}</b>
+            <i>👨‍🏫 ${timetableData.LecturerName}</i>
+            <i>🏫 ${timetableData.Location.substring(0,20)}</i>`;
 
-            - *${timetableData.TimeStart} - ${timetableData.TimeEnd}*
-            - **Location:** ${timetableData.Location}
-            - **Course:** ${timetableData.CourseName}
-            - **Lecturer:** ${timetableData.LecturerName}`;
-
-            bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
+            bot.sendMessage(chatId, responseMessage, { parse_mode: 'HTML' });
         }
         else {
             // bot.sendMessage(chatId, "there are no any lecture for today", { parse_mode: 'Markdown' });
@@ -108,12 +108,13 @@ async function sendOngoingLecture() {
         if (ongoing_lecture_data !== null) {
             let responseMessage = `
             **Ongoing Lecture**
-            - *${ongoing_lecture_data.TimeStart} - ${ongoing_lecture_data.TimeEnd}*
-            - **Location:** ${ongoing_lecture_data.Location}
-            - **Course:** ${ongoing_lecture_data.CourseName}
-            - **Lecturer:** ${ongoing_lecture_data.LecturerName}`
-
-            bot.sendMessage(chatId, responseMessage, { parse_mode: "Markdown" });
+            \n
+            <b>${ongoing_lecture_data.TimeStart} - ${ongoing_lecture_data.TimeEnd}</b>\n
+            <b>📚 ${ongoing_lecture_data.CourseName}</b>
+            <i>👨‍🏫 ${ongoing_lecture_data.LecturerName}</i>
+            <i>🏫 ${ongoing_lecture_data.Location.substring(0,20)}</i>`
+            
+            bot.sendMessage(chatId, responseMessage, { parse_mode: "HTML" });
         }
         else {
             bot.sendMessage(chatId, "There is no any lecture at this time", { parse_mode: 'Markdown' });

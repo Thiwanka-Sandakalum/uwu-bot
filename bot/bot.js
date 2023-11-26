@@ -37,17 +37,19 @@ bot.on('message', async (msg) => {
                         logger.info('Timetable Data execute');
 
                         if (Array.isArray(timetableData)) {
+
                             if (timetableData.length > 0) {
 
-                                let responseMessage =
-                                    `**Today's Timetable**
+                                timetableData = JSON.parse(timetableData);
 
-                            ${timetableData.map(({ TimeStart, TimeEnd, Location, CourseName, LecturerName }) => `
-                                - *${TimeStart} - ${TimeEnd}*
-                                - **Location:** ${Location}
-                                - **Course:** ${CourseName}
-                                - **Lecturer:** ${LecturerName}`).join('')}`;
+                                let responseMessage = `
+                                    **Today's Timetable**
 
+                                    ${timetableData.map(({ TimeStart, TimeEnd, Location, CourseName , LecturerName }) => `
+                                        - *${TimeStart} - ${TimeEnd}*
+                                        - **Location:** ${Location}
+                                        - **Course:** ${CourseName}
+                                        - **Lecturer:** ${LecturerName}`).join('')}`;
 
                                 bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
 
@@ -77,14 +79,15 @@ bot.on('message', async (msg) => {
 
                         if (timetableData !== null) {
                             let responseMessage = `
-                                **Next Lecture**
-
-                                - *${timetableData.TimeStart} - ${timetableData.TimeEnd}*
-                                - **Location:** ${timetableData.Location}
-                                - **Course:** ${timetableData.CourseName}
-                                - **Lecturer:** ${timetableData.LecturerName}
+                                <b>Next Lecture</b>
+                                \n
+                                <b>${timetableData.Day}</b>\n
+                                <b>${timetableData.TimeStart} - ${timetableData.TimeEnd}</b>\n
+                                <b>📚 ${timetableData.CourseName}</b>
+                                <i>👨‍🏫 ${timetableData.LecturerName}</i>
+                                <i>🏫 ${timetableData.Location.substring(0,20)} ...</i>
                             `;
-                            bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
+                            bot.sendMessage(chatId, responseMessage, { parse_mode: 'HTML' });
                         } else {
                             bot.sendMessage(chatId, "There are no any lectures for today", { parse_mode: 'Markdown' });
                         }
@@ -102,13 +105,15 @@ bot.on('message', async (msg) => {
                         logger.info(ongoing_lecture_data);
                         if (ongoing_lecture_data !== null) {
                             let responseMessage = `
-                                **Ongoing Lecture**
-                                - *${ongoing_lecture_data.TimeStart} - ${ongoing_lecture_data.TimeEnd}*
-                                - **Location:** ${ongoing_lecture_data.Location}
-                                - **Course:** ${ongoing_lecture_data.CourseName}
-                                - **Lecturer:** ${ongoing_lecture_data.LecturerName}
+                                <b>Ongoing Lecture</b>
+                                \n
+                                <b>${ongoing_lecture_data.Day}</b>\n
+                                <b>${ongoing_lecture_data.TimeStart} - ${ongoing_lecture_data.TimeEnd}</b>\n
+                                <b>📚 ${ongoing_lecture_data.CourseName}</b>
+                                <i>👨‍🏫 ${ongoing_lecture_data.LecturerName}</i>
+                                <i>🏫 ${ongoing_lecture_data.Location.substring(0,20)} ...</i>
                             `;
-                            bot.sendMessage(msg.chat.id, responseMessage, { parse_mode: "Markdown" });
+                            bot.sendMessage(msg.chat.id, responseMessage, { parse_mode: "HTML" });
                         } else {
                             bot.sendMessage(msg.chat.id, "There is no any ongoing lecture at this time", { parse_mode: 'Markdown' });
                         }
@@ -130,11 +135,30 @@ bot.on('message', async (msg) => {
 });
 
 
-// send massage to clients
-async function sendMessage(chatID, data) {
-    bot.sendMessage(chatID, data)
-}
+// bot automation
+const chatID = '6275667988';
 
-module.exports = {
-    sendMessage,bot
-}
+cron.schedule(' * * * * *', async () => {
+    console.log("cron")
+    try {
+        const timetableData = await upcoming_lecture();
+
+        if (timetableData !== null) {
+            let responseMessage = `
+                **Next Lecture**
+
+                - *${timetableData.TimeStart} - ${timetableData.TimeEnd}*
+                - **Location:** ${timetableData.Location}
+                - **Course:** ${timetableData.CourseName}
+                - **Lecturer:** ${timetableData.LecturerName}
+            `;
+            console.log((timetableData));
+            bot.sendMessage(chatID, responseMessage, { parse_mode: 'Markdown' });
+        } else {
+            bot.sendMessage(chatID, "There are no any lectures for today", { parse_mode: 'Markdown' });
+        }
+    } catch (error) {
+        logger.error(error);
+        bot.sendMessage(chatID, "Error fetching timetable data.");
+    }
+});
