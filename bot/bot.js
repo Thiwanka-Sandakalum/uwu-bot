@@ -8,6 +8,7 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 let timetableData = [];
 const bot = new TelegramBot(token, { polling: true });
 
+
 bot.on('message', async (msg) => {
     try {
         const chatId = msg.chat.id;
