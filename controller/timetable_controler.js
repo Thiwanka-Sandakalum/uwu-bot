@@ -4,6 +4,9 @@ const now = new Date();
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const today = daysOfWeek[now.getDay()];
 
+
+
+
 async function getLecture(time, day) {
     try {
         const period = await TimetableSlots.findOne({

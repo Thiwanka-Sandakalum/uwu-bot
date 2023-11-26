@@ -5,8 +5,8 @@ const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 
 
-const token = "6973552405:AAGDFim24Yie0aaRqqmnQFXC_WhVz6202n4";
-const chatId = "6275667988";
+const token = process.env.TELEGRAM_BOT_TOKEN;
+const chatId = process.env.TELEGRAM_ID;
 
 let timetableData = [];
 const bot = new TelegramBot(token, { polling: true });
@@ -93,7 +93,7 @@ async function sendNextLecture() {
             bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
         }
         else {
-            bot.sendMessage(chatId, "there are no any lecture for today", { parse_mode: 'Markdown' });
+            // bot.sendMessage(chatId, "there are no any lecture for today", { parse_mode: 'Markdown' });
         }
     }
     catch (error) {
