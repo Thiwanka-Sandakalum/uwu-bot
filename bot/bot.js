@@ -40,18 +40,19 @@ bot.on('message', async (msg) => {
 
                             if (timetableData.length > 0) {
 
-                                timetableData = JSON.parse(timetableData);
+                                // timetableData = JSON.parse(timetableData);
 
                                 let responseMessage = `
-                                    **Today's Timetable**
 
-                                    ${timetableData.map(({ TimeStart, TimeEnd, Location, CourseName , LecturerName }) => `
-                                        - *${TimeStart} - ${TimeEnd}*
-                                        - **Location:** ${Location}
-                                        - **Course:** ${CourseName}
-                                        - **Lecturer:** ${LecturerName}`).join('')}`;
+                                    <b>Today's Timetable</b>
+                                    ${timetableData.map(({Day , TimeStart, TimeEnd, Location, CourseName , LecturerName }) => `
+                                    <b>${Day}</b>\n
+                                    <b>${TimeStart} - ${TimeEnd}</b>\n
+                                    <b>📚 ${CourseName}</b>
+                                    <i>👨‍🏫 ${LecturerName}</i>
+                                    <i>🏫 ${Location.substring(0,20)} ...</i>`).join('\n')}`;
 
-                                bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
+                                bot.sendMessage(chatId, responseMessage, { parse_mode: 'HTML' });
 
                                 logger.info('Today\'s timetable sent successfully');
                             } else {
@@ -135,30 +136,11 @@ bot.on('message', async (msg) => {
 });
 
 
-// bot automation
-const chatID = '6275667988';
+// send massage to clients
+async function sendMessage(chatID, data) {
+    bot.sendMessage(chatID, data)
+}
 
-cron.schedule(' * * * * *', async () => {
-    console.log("cron")
-    try {
-        const timetableData = await upcoming_lecture();
-
-        if (timetableData !== null) {
-            let responseMessage = `
-                **Next Lecture**
-
-                - *${timetableData.TimeStart} - ${timetableData.TimeEnd}*
-                - **Location:** ${timetableData.Location}
-                - **Course:** ${timetableData.CourseName}
-                - **Lecturer:** ${timetableData.LecturerName}
-            `;
-            console.log((timetableData));
-            bot.sendMessage(chatID, responseMessage, { parse_mode: 'Markdown' });
-        } else {
-            bot.sendMessage(chatID, "There are no any lectures for today", { parse_mode: 'Markdown' });
-        }
-    } catch (error) {
-        logger.error(error);
-        bot.sendMessage(chatID, "Error fetching timetable data.");
-    }
-});
+module.exports = {
+    sendMessage,bot
+}
