@@ -20,15 +20,16 @@ async function sendTimeTable() {
 
         if (timetableData.length > 0) {
             let responseMessage = `
-                    **Timetable**
-                    
-                    ${timetableData.map(({ TimeStart, TimeEnd, Location, CourseName , LecturerName }) => `
-                    - *${TimeStart} - ${TimeEnd}*
-                    - **Location:** ${Location}
-                    - **Course:** ${CourseName}
-                    - **Lecturer:** ${LecturerName}`).join('')}`;
+                    ${timetableData.map(({ Day , TimeStart, TimeEnd, Location, CourseName , LecturerName }) => `
+                    <b>${Day}</b>\n
+                    <b>${TimeStart} - ${TimeEnd}</b>\n
+                    <b>📚 ${CourseName}</b>
+                    <i>👨‍🏫 ${LecturerName}</i>
+                    <i>🏫 ${Location}</i>`).join('\n')}`;
 
-            bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
+            bot.sendMessage(chatId, `<b>Time Table 📅</b>`, { parse_mode: 'HTML' });
+
+            bot.sendMessage(chatId, responseMessage, { parse_mode: 'HTML' });
         } else {
             bot.sendMessage(chatId, "Contact Developer!");
         }
@@ -40,9 +41,6 @@ async function sendTimeTable() {
     }
 }
 
-
-
-
 async function sendTodaySchedule() {
     try {
         logger.info("Sending Today Schedule...");
@@ -52,15 +50,16 @@ async function sendTodaySchedule() {
 
         if (timetableData.length > 0) {
             let responseMessage = `
-                    **Today's Timetable**
+                    <b>Today Time Table 📅</b>
                     
                     ${timetableData.map(({ TimeStart, TimeEnd, Location, CourseName , LecturerName }) => `
-                    - *${TimeStart} - ${TimeEnd}*
-                    - **Location:** ${Location}
-                    - **Course:** ${CourseName}
-                    - **Lecturer:** ${LecturerName}`).join('')}`;
+                        <b>${TimeStart} - ${TimeEnd}</b>\n
+                        <b>📚 ${CourseName}</b>
+                        <i>👨‍🏫 ${LecturerName}</i>
+                        <i>🏫 ${Location}</i>
+                    `).join('\n')}`;
 
-            bot.sendMessage(chatId, responseMessage, { parse_mode: 'Markdown' });
+            bot.sendMessage(chatId, responseMessage, { parse_mode: "HTML" });
         } else {
             bot.sendMessage(chatId, "No timetable data available for today.");
         }

@@ -68,7 +68,7 @@ async function timetable() {
 async function today_timetable() {
     
     try {
-        let data = await GetTodayLectures(today)
+        let data = await GetTodayLectures("Monday")
         return data;
     } catch (error) {
         logger.error(error);
