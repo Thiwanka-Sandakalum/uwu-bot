@@ -3,6 +3,8 @@ const logger = require('../logger/index');
 const { today_timetable, upcoming_lecture, ongoing_lecture } = require('../controller/timetable_controler');
 require('dotenv').config();
 const cron = require('node-cron');
+const fs = require("fs").promises;
+const path = require('path')
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -10,12 +12,68 @@ let timetableData = [];
 const bot = new TelegramBot(token, { polling: true });
 
 
+const filePath = path.resolve(__dirname, '../data.json');
+
+
+async function UdpdateStudentData(newData) {
+    try {
+
+      const fileContent = await fs.readFile(filePath, 'utf-8');
+
+      const existingData = JSON.parse(fileContent);
+    
+      existingData.students.push(newData);
+
+      const updatedDataString = JSON.stringify(existingData, null, 2);
+  
+      await fs.writeFile("data.json", updatedDataString, 'utf-8');
+
+      return "Done";
+
+
+    } catch (error) {
+        logger.error('Error reading or writing JSON file:', error.message);
+        return new Error(error);
+      
+    }
+}
+
+
+async function StudentRegistered(id) {
+    return new Promise(async(resolve) => {
+        const fileContent = await fs.readFile(filePath, { encoding: 'utf-8' });
+
+        const {students} = JSON.parse(fileContent);
+
+
+        if(students.length > 0)
+        {
+            resolve( students.some(obj => obj.id === id));
+        }
+        else
+        {
+            resolve(false);
+        }
+    })
+}
+
+
 bot.on('message', async (msg) => {
     try {
+
         const chatId = msg.chat.id;
         const username = msg.chat.first_name;
 
-        console.log(msg);
+        const is_registered = await StudentRegistered(chatId);
+
+        if(!is_registered){
+            data = {
+                name:username ,
+                id : chatId
+            }
+
+            await UdpdateStudentData(data);
+        }
 
         // message has been received
         logger.info(`bot msg have received from ${username} ID: ${chatId}`);
