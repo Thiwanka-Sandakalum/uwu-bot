@@ -75,5 +75,14 @@ async function today_timetable() {
     }
 }
 
+async function update_timtable(startTime,endTime,CourseCode,Location){
+    try {
+        await updateTimetable(startTime,endTime,CourseCode,Location)
+    } catch (error) {
+        logger.error(error)
+        return error;
+    }
+}
 
-module.exports = { upcoming_lecture, ongoing_lecture, today_timetable , timetable};
+
+module.exports = { upcoming_lecture, ongoing_lecture, today_timetable , timetable,update_timtable};
