@@ -8,9 +8,6 @@ const path = require('path')
 
 const filePath = path.resolve(__dirname, 'data.json');
 
-
-
-
 async function GetStudents(){
     return await new Promise(async(resolve) => {
         const fileContent = await fs.readFile(filePath, 'utf-8');
