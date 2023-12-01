@@ -124,6 +124,9 @@ dist/
 
 data.db
 data.db-journal
+data.sqlite
+.sqlite
+.db
 
 # yarn v2
 .yarn/cache
