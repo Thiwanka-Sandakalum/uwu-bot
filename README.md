@@ -1,19 +1,9 @@
 # UWU Bot (University Lecture Reminder Bot)
 
-<div style="margin-top:5px; display: flex; justify-content: center; ">
-    <p align="center">
-        <img style="margin-right: 10px;" src="https://img.shields.io/badge/Node-20.5.0-green" alt="Node Version Badge">
-    </p>
-    <p align="center">
-        <img style="margin-right: 10px;" src="https://img.shields.io/badge/prisma-5.6-blue" alt="Node Version Badge">
-    </p>
-    <p align="center">
-        <img style="margin-right: 10px;" src="https://img.shields.io/badge/sqlite3-5.0-lightblue" alt="Node Version Badge">
-    </p>
-    <p align="center">
-        <img style="margin-right: 10px;" src="https://img.shields.io/badge/azure-functions-blue" alt="Node Version Badge">
-    </p>
-</div>
+![npm](https://img.shields.io/badge/Node-20.5.0-green)
+![npm](https://img.shields.io/badge/prisma-5.6-blue)
+![npm](https://img.shields.io/badge/sqlite3-5.0-lightblue)
+
 
 ## Overview
 
