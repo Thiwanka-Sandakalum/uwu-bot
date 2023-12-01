@@ -132,3 +132,4 @@ data.db-journal
 .yarn/install-state.gz
 .pnp.*
 data.sqlite
+data.sqlite-journal
