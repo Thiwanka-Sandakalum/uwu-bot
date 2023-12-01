@@ -44,3 +44,6 @@
 
 - **/today_schedule:** 
     - View the timetable for the day.
+
+
+**Developed by [Nishan](https://github.com/nishansanjuka) and [Me](https://github.com/Thiwanka-Sandakalum)**
