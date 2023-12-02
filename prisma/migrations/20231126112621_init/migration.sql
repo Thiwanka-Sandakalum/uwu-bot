@@ -49,7 +49,7 @@ INSERT INTO Courses VALUES
 INSERT INTO TimetableSlots VALUES
 -- Monday
 (1,'Monday', '10:00:00', '12:00:00', 'ICT 141-3' , "TLH1 - Technology Lecture Hall 1"),
-(2,'Monday', '09:00:00', '10:00:00', 'ICT 132-2' , "TLH1 - Technology Lecture Hall 1"),
+(2,'Monday', '13:00:00', '14:00:00', 'ICT 132-2' , "TLH1 - Technology Lecture Hall 1"),
 
 
 -- Tuesday 

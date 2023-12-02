@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-
-  url      = "file:data.sqlite"
+  provider = "sqlite"
+  url      = "file:../data.sqlite"
 }
 
 

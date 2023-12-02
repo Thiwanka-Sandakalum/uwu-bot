@@ -124,7 +124,7 @@ dist/
 
 #data bases
 data.db
-data.db-journal
+data.sqlite-journal
 data.sqlite
 .sqlite
 
