@@ -40,7 +40,7 @@ INSERT INTO Courses VALUES
 ('ICT 131-3', 'Programming Techniques', 'Ms. W.B.M.S.C. Wijayakoon (PL)'),
 ('ICT 133-3', 'Computer Systems Organization', 'Mr. W.M.C.J.T. Kithulwatta (PL)'),
 ('ICT 141-3', 'Electronics for ICT', 'Mr. J.A.L. Naveendra (PL)'),
-('ICT 132-2', 'NOT ASSIGNED', 'NOT ASSIGNED'),
+('ICT 132-2', 'Fundamentals of Computer Networks', 'Ms. A.H.M.T.C Bakmeedeniya (PL)'),
 ('LIBRARY HOURS', 'LIBRARY HOURS', 'LIBRARY HOURS'),
 ('LUNCH BREAK', 'LUNCH BREAK', 'LUNCH BREAK');
 
